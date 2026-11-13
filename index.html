@@ -3,235 +3,1013 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Свет Веры</title>
+    <title>Новый Завет - Обучение</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Nunito (Duolingo style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #E6DFD3; }
-        .app-wrapper { max-width: 480px; margin: 0 auto; background: #F5F1E7; min-height: 100vh; position: relative; overflow-x: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        .btn-3d { box-shadow: 0 4px 0 #5C4033; transition: transform 0.1s, box-shadow 0.1s; }
-        .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 #5C4033; }
+        * {
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        body {
+            background-color: #E5DEC9;
+            margin: 0;
+            padding: 0;
+        }
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #FDFBF7;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 35px rgba(92, 64, 51, 0.18);
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        /* Фирменные 3D кнопки в стиле Duolingo */
+        .btn-duo-brown {
+            background-color: #8B5A2B;
+            color: #FFFFFF;
+            box-shadow: 0 5px 0 #5C3A1B;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-brown:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #5C3A1B;
+        }
+        .btn-duo-beige {
+            background-color: #EFE6D5;
+            color: #5C4033;
+            border: 2px solid #D5C3A6;
+            box-shadow: 0 4px 0 #D5C3A6;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-beige:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #D5C3A6;
+        }
+        .btn-duo-gold {
+            background-color: #E6A100;
+            color: #FFFFFF;
+            box-shadow: 0 5px 0 #B37D00;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-gold:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #B37D00;
+        }
+        .card-3d {
+            background-color: #FFFFFF;
+            border: 2px solid #E6DEC8;
+            box-shadow: 0 5px 0 #E6DEC8;
+            border-radius: 24px;
+        }
+        /* Узлы уровней на карте */
+        .node-active {
+            background: linear-gradient(145deg, #9C6735, #8B5A2B);
+            color: white;
+            box-shadow: 0 7px 0 #5C3A1B, 0 12px 20px rgba(139, 90, 43, 0.35);
+            border: 4px solid #FFF8EE;
+        }
+        .node-ActivePulse {
+            animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 7px 0 #5C3A1B, 0 0 0 0 rgba(139, 90, 43, 0.5); }
+            70% { box-shadow: 0 7px 0 #5C3A1B, 0 0 0 14px rgba(139, 90, 43, 0); }
+            100% { box-shadow: 0 7px 0 #5C3A1B, 0 0 0 0 rgba(139, 90, 43, 0); }
+        }
+        .node-completed {
+            background: linear-gradient(145deg, #F5B727, #E09F1F);
+            color: white;
+            box-shadow: 0 7px 0 #B57C0E;
+            border: 4px solid #FFFDF9;
+        }
+        .node-locked {
+            background-color: #E8E0CE;
+            color: #A69982;
+            box-shadow: 0 7px 0 #C9BDA6;
+            border: 4px solid #F7F3EB;
+        }
+        /* 3D Переворот карточки в уроке */
+        .perspective { perspective: 1000px; }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .flip-card-front {
+            background-color: #FFFFFF;
+            border: 3px solid #D5C3A6;
+            box-shadow: 0 6px 0 #D5C3A6;
+        }
+        .flip-card-back {
+            background-color: #FFF8EB;
+            border: 3px solid #E09F1F;
+            box-shadow: 0 6px 0 #E09F1F;
+            transform: rotateY(180deg);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hide { display: none !important; }
-        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .mascot-float { animation: float 3s ease-in-out infinite; }
     </style>
 </head>
 <body>
-<div class="app-wrapper flex flex-col">
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ / РЕГИСТРАЦИИ -->
-    <div id="auth-screen" class="absolute inset-0 bg-[#F5F1E7] z-50 flex flex-col items-center justify-center p-6 text-center">
-        <div class="w-24 h-24 bg-[#D2B48C] rounded-full flex items-center justify-center mb-6 shadow-md border-2 border-[#5C4033]">
-            <i class="fas fa-dove text-5xl text-[#5C4033]"></i>
-        </div>
-        <h1 class="text-3xl font-bold text-[#5C4033] mb-2">Свет Веры</h1>
-        <p class="text-[#8B5A2B] mb-6 font-medium">Войдите в свой аккаунт</p>
-        
-        <input type="email" id="email-input" class="w-full px-4 py-3 rounded-2xl border-2 border-[#D2B48C] text-lg focus:outline-none focus:border-[#8B5A2B] mb-3 text-[#5C4033] font-bold shadow-inner bg-white" placeholder="Email...">
-        <input type="password" id="pass-input" class="w-full px-4 py-3 rounded-2xl border-2 border-[#D2B48C] text-lg focus:outline-none focus:border-[#8B5A2B] mb-4 text-[#5C4033] font-bold shadow-inner bg-white" placeholder="Пароль (от 6 символов)...">
-        
-        <p id="auth-error" class="text-red-500 font-bold mb-4 text-sm hide"></p>
+<div class="app-container">
 
-        <button onclick="handleAuth()" class="btn-3d w-full bg-[#8B5A2B] text-white py-4 rounded-2xl font-bold text-lg mb-3">Продолжить</button>
-    </div>
+    <!-- ================= ЭКРАН АВТОРИЗАЦИИ И РЕГИСТРАЦИИ ================= -->
+    <div id="auth-screen" class="fixed inset-0 max-w-[480px] mx-auto bg-[#FDFBF7] z-50 flex flex-col justify-between p-7">
+        <div class="flex-1 flex flex-col items-center justify-center text-center">
+            <!-- Логотип с голубем и свечением -->
+            <div class="relative mb-6">
+                <div class="w-28 h-28 bg-[#F4EAD8] rounded-full flex items-center justify-center border-4 border-[#D5C3A6] shadow-inner mascot-float">
+                    <i class="fas fa-dove text-5xl text-[#8B5A2B]"></i>
+                </div>
+                <div class="absolute -bottom-2 -right-2 bg-[#E09F1F] text-white w-10 h-10 rounded-full flex items-center justify-center border-4 border-[#FDFBF7] shadow">
+                    <i class="fas fa-star text-sm"></i>
+                </div>
+            </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
-    <div id="main-content" class="flex-1 overflow-y-auto pb-24 hide">
-        
-        <!-- ВКЛАДКА: ПУТЬ -->
-        <div id="tab-map" class="p-0">
-            <!-- Карточки -->
-            <div class="pt-6 pl-6 pb-2">
-                <h3 class="text-lg font-bold text-[#5C4033] mb-3">Интересное сегодня</h3>
-                <div class="flex gap-4 overflow-x-auto horizontal-scroll pb-4 pr-6">
-                    <div onclick="alert('Арамейский язык был разговорным языком Иисуса в повседневной жизни.')" class="min-w-[140px] bg-white p-4 rounded-2xl border-2 border-[#D2B48C] shadow-sm flex flex-col items-center text-center cursor-pointer">
-                        <span class="text-3xl mb-2">📜</span>
-                        <span class="font-bold text-[#5C4033] text-sm">Язык Христа</span>
+            <h1 class="text-4xl font-black text-[#4A3222] tracking-tight mb-1">Свет Веры</h1>
+            <p id="auth-subtitle" class="text-[#8B6B4E] font-bold text-base mb-8">Изучай Новый Завет шаг за шагом</p>
+
+            <!-- Переключатель Вход / Регистрация -->
+            <div class="w-full bg-[#EFE6D5] p-1.5 rounded-2xl flex mb-6 border-2 border-[#E2D5BE]">
+                <button id="tab-login-btn" onclick="setAuthMode('login')" class="flex-1 py-2.5 rounded-xl font-extrabold text-sm transition-all bg-white text-[#5C4033] shadow-sm">Вход</button>
+                <button id="tab-reg-btn" onclick="setAuthMode('register')" class="flex-1 py-2.5 rounded-xl font-extrabold text-sm transition-all text-[#8B6B4E]">Регистрация</button>
+            </div>
+
+            <!-- Поля формы -->
+            <div class="w-full space-y-3.5 text-left">
+                <div id="name-field-wrap" class="hide">
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-[#8B6B4E] ml-2">Ваше Имя</label>
+                    <div class="relative mt-1">
+                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-[#A68A6D]"></i>
+                        <input type="text" id="auth-name" placeholder="Например, Илона" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border-2 border-[#DFD2BC] focus:border-[#8B5A2B] focus:outline-none font-bold text-[#4A3222] text-base">
                     </div>
-                    <div onclick="alert('Новый Завет состоит из 27 книг, написанных в 1 веке нашей эры.')" class="min-w-[140px] bg-white p-4 rounded-2xl border-2 border-[#D2B48C] shadow-sm flex flex-col items-center text-center cursor-pointer">
-                        <span class="text-3xl mb-2">📚</span>
-                        <span class="font-bold text-[#5C4033] text-sm">Структура</span>
+                </div>
+
+                <div>
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-[#8B6B4E] ml-2">Электронная почта</label>
+                    <div class="relative mt-1">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-[#A68A6D]"></i>
+                        <input type="email" id="auth-email" placeholder="name@icloud.com" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border-2 border-[#DFD2BC] focus:border-[#8B5A2B] focus:outline-none font-bold text-[#4A3222] text-base">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-[#8B6B4E] ml-2">Пароль</label>
+                    <div class="relative mt-1">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-[#A68A6D]"></i>
+                        <input type="password" id="auth-pass" placeholder="Минимум 6 символов" class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border-2 border-[#DFD2BC] focus:border-[#8B5A2B] focus:outline-none font-bold text-[#4A3222] text-base">
                     </div>
                 </div>
             </div>
 
-            <h2 class="text-2xl font-bold text-[#5C4033] mb-8 text-center mt-4">Путь познания</h2>
-            <div class="flex flex-col items-center gap-8 relative mt-4 pb-12">
-                <div class="absolute w-3 bg-[#D2B48C] h-full z-0 rounded-full left-1/2 -translate-x-1/2 opacity-50"></div>
-                <div onclick="openLesson(1)" class="z-10 relative bg-[#8B5A2B] text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold btn-3d border-4 border-[#F5F1E7] ml-[-100px] cursor-pointer">1</div>
-                <div class="z-10 relative bg-[#D2B48C] text-[#5C4033] w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold btn-3d border-4 border-[#F5F1E7] mr-[-100px] cursor-pointer opacity-70">2</div>
-                <div class="z-10 relative bg-[#D2B48C] text-[#5C4033] w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold btn-3d border-4 border-[#F5F1E7] ml-[-100px] cursor-pointer opacity-70">3</div>
+            <!-- Уведомление об ошибке -->
+            <div id="auth-error-box" class="w-full mt-4 bg-[#FDE8E8] border-2 border-[#F5B5B5] text-[#B83333] px-4 py-3 rounded-2xl text-sm font-extrabold hide flex items-center gap-2">
+                <i class="fas fa-circle-exclamation text-lg"></i>
+                <span id="auth-error-text">Ошибка</span>
             </div>
+
+            <button id="auth-submit-btn" onclick="submitAuth()" class="btn-duo-brown w-full py-4 rounded-2xl font-black text-lg uppercase tracking-wider mt-6">
+                Войти в аккаунт
+            </button>
         </div>
 
-        <!-- ВКЛАДКА: БИБЛИЯ -->
-        <div id="tab-bible" class="p-6 hide">
-            <h2 class="text-2xl font-bold text-[#5C4033] text-center mb-6">Библия</h2>
-            <div class="bg-white p-6 rounded-2xl border-2 border-[#D2B48C] shadow-sm">
-                <p class="text-[#5C4033] leading-relaxed mb-4"><b>1.</b> Родословие Иисуса Христа, Сына Давидова, Сына Авраамова.</p>
-                <p class="text-[#5C4033] leading-relaxed"><b>2.</b> Авраам родил Исаака; Исаак родил Иакова; Иаков родил Иуду и братьев его;</p>
+        <p class="text-center text-xs font-bold text-[#A68A6D]">Бесплатное образовательное приложение • Новый Завет</p>
+    </div>
+
+    <!-- ================= ВЕРХНЯЯ ПАНЕЛЬ СТАТУСА (В стиле Duolingo) ================= -->
+    <header id="top-bar" class="sticky top-0 z-30 bg-[#FDFBF7]/95 backdrop-blur-md border-b-2 border-[#EAE0CE] px-5 py-3 flex items-center justify-between hide">
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-xl bg-[#F4EAD8] border-2 border-[#D5C3A6] flex items-center justify-center">
+                <i class="fas fa-dove text-[#8B5A2B] text-lg"></i>
             </div>
+            <span class="font-black text-[#4A3222] text-lg tracking-tight">Свет Веры</span>
         </div>
 
-        <!-- ВКЛАДКА: СТИХ ДНЯ -->
-        <div id="tab-verse" class="p-6 hide">
-            <h2 class="text-2xl font-bold text-[#5C4033] text-center mb-6">Стих Дня</h2>
-            <div class="bg-white p-8 rounded-3xl border-2 border-[#D2B48C] text-center shadow-sm">
-                <p class="italic text-lg text-[#5C4033] mb-4">«Все могу в укрепляющем меня Иисусе Христе.»</p>
-                <p class="font-bold text-[#8B5A2B] text-sm">Филиппийцам 4:13</p>
+        <div class="flex items-center gap-4">
+            <!-- Ударный режим (Стрик) -->
+            <div class="flex items-center gap-1.5 bg-[#FFF3DF] border-2 border-[#F5D399] px-3 py-1 rounded-xl">
+                <i class="fas fa-fire text-[#F59E0B] text-base"></i>
+                <span id="header-streak" class="font-black text-[#B45309] text-sm">1</span>
+            </div>
+            <!-- Звезды мудрости -->
+            <div class="flex items-center gap-1.5 bg-[#FFF9DB] border-2 border-[#F2DC79] px-3 py-1 rounded-xl">
+                <i class="fas fa-star text-[#EAB308] text-base"></i>
+                <span id="header-stars" class="font-black text-[#A16207] text-sm">0</span>
             </div>
         </div>
+    </header>
 
-        <!-- ВКЛАДКА: НАГРАДЫ -->
-        <div id="tab-achievements" class="p-6 hide">
-            <h2 class="text-2xl font-bold text-[#5C4033] text-center mb-6">Достижения</h2>
-            <div class="bg-white p-6 rounded-3xl border-2 border-[#D2B48C] text-center shadow-sm">
-                <div class="text-6xl mb-4">👼</div>
-                <p class="font-bold text-[#5C4033] text-lg">Первые шаги</p>
-                <p class="text-sm text-[#8B5A2B]">Начало вашего духовного пути</p>
-            </div>
-        </div>
+    <!-- ================= ОСНОВНОЙ КОНТЕНТ (5 ВКЛАДОК + АДМИН) ================= -->
+    <main id="main-area" class="flex-1 overflow-y-auto pb-28 hide">
 
-        <!-- ВКЛАДКА: ПРОФИЛЬ -->
-        <div id="tab-profile" class="p-6 hide">
-            <h2 class="text-2xl font-bold text-[#5C4033] mb-6 text-center">Личный кабинет</h2>
-            <div class="bg-white p-8 rounded-3xl shadow-sm text-center border-2 border-[#D2B48C]">
-                <div class="w-24 h-24 bg-[#8B5A2B] text-white rounded-full flex items-center justify-center text-4xl font-bold mx-auto mb-4 shadow-md uppercase">@</div>
-                <h3 id="profile-email-text" class="text-xl font-bold text-[#5C4033] mb-1"></h3>
-                <p class="text-[#8B5A2B] font-medium mb-8">Ученик Света</p>
-                <button onclick="logoutUser()" class="btn-3d w-full bg-[#E5B5B5] text-[#5C4033] py-3 rounded-2xl font-bold text-md">Выйти из аккаунта</button>
+        <!-- 1. ВКЛАДКА: ПУТЬ (ГЛАВНАЯ) -->
+        <section id="tab-map" class="p-5 space-y-6">
+            
+            <!-- Плашка текущего раздела -->
+            <div class="bg-[#8B5A2B] text-white p-5 rounded-3xl shadow-md border-b-4 border-[#5C3A1B] flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-[#E6CCB2]">Раздел 1 • Основы</span>
+                    <h2 class="text-xl font-black mt-0.5">Земная жизнь Христа</h2>
+                </div>
+                <div class="w-12 h-12 bg-white/15 rounded-2xl flex items-center justify-center text-2xl">
+                    📖
+                </div>
             </div>
+
+            <!-- Горизонтальные карточки обучения ("Интересное сегодня") -->
+            <div>
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <h3 class="text-base font-black text-[#4A3222] uppercase tracking-wider">Карточки знаний</h3>
+                    <span class="text-xs font-extrabold text-[#8B5A2B]">Листай вбок →</span>
+                </div>
+                <div class="flex gap-3.5 overflow-x-auto no-scrollbar pb-2">
+                    <div onclick="openFactCard('Язык Иисуса Христа', '📜', 'В повседневной жизни Иисус и апостолы говорили на арамейском языке, но книги Нового Завета были записаны на древнегреческом (койне), чтобы Благая весть была понятна всему миру.')" class="min-w-[155px] card-3d p-4 flex flex-col justify-between cursor-pointer active:scale-95 transition">
+                        <div class="w-11 h-11 rounded-2xl bg-[#F4EAD8] flex items-center justify-center text-2xl mb-3">📜</div>
+                        <div>
+                            <h4 class="font-black text-[#4A3222] text-sm leading-tight">Язык Христа</h4>
+                            <p class="text-xs font-bold text-[#9C826B] mt-1">Нажми, чтобы узнать</p>
+                        </div>
+                    </div>
+
+                    <div onclick="openFactCard('27 книг Нового Завета', '📚', 'Новый Завет включает 4 Евангелия, книгу Деяний Апостолов, 21 послание апостолов и книгу Откровения (Апокалипсис).')" class="min-w-[155px] card-3d p-4 flex flex-col justify-between cursor-pointer active:scale-95 transition">
+                        <div class="w-11 h-11 rounded-2xl bg-[#F4EAD8] flex items-center justify-center text-2xl mb-3">📚</div>
+                        <div>
+                            <h4 class="font-black text-[#4A3222] text-sm leading-tight">27 Книг</h4>
+                            <p class="text-xs font-bold text-[#9C826B] mt-1">Структура Завета</p>
+                        </div>
+                    </div>
+
+                    <div onclick="openFactCard('Четыре Евангелиста', '🕊️', 'Матфей, Марк, Лука и Иоанн описали жизнь Иисуса с разных сторон, дополняя друг друга, словно четыре свидетеля великого чуда.')" class="min-w-[155px] card-3d p-4 flex flex-col justify-between cursor-pointer active:scale-95 transition">
+                        <div class="w-11 h-11 rounded-2xl bg-[#F4EAD8] flex items-center justify-center text-2xl mb-3">🕊️</div>
+                        <div>
+                            <h4 class="font-black text-[#4A3222] text-sm leading-tight">4 Евангелия</h4>
+                            <p class="text-xs font-bold text-[#9C826B] mt-1">Свидетели Света</p>
+                        </div>
+                    </div>
+
+                    <div onclick="openFactCard('Что такое Притчи?', '🌾', 'Притчи — это короткие жизненные истории с глубоким духовным смыслом, через которые Иисус объяснял людям тайны Царствия Божия.')" class="min-w-[155px] card-3d p-4 flex flex-col justify-between cursor-pointer active:scale-95 transition">
+                        <div class="w-11 h-11 rounded-2xl bg-[#F4EAD8] flex items-center justify-center text-2xl mb-3">🌾</div>
+                        <div>
+                            <h4 class="font-black text-[#4A3222] text-sm leading-tight">Тайна притч</h4>
+                            <p class="text-xs font-bold text-[#9C826B] mt-1">Мудрость в образах</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Помощник Ангелочек -->
+            <div class="card-3d p-4 flex items-center gap-4 bg-[#FFFBF2]">
+                <div class="text-4xl mascot-float">👼</div>
+                <div class="flex-1">
+                    <p class="text-xs font-black uppercase text-[#B57C0E]">Совет проводника</p>
+                    <p id="mascot-greeting" class="text-sm font-bold text-[#5C4033] leading-snug">Нажми на светящийся кружок уровня, чтобы начать урок и заработать звёзды!</p>
+                </div>
+            </div>
+
+            <!-- Дорожка уровней в стиле Duolingo -->
+            <div id="levels-path-container" class="relative py-6 flex flex-col items-center gap-7">
+                <!-- Генерируется динамически в JS -->
+            </div>
+        </section>
+
+        <!-- 2. ВКЛАДКА: БИБЛИЯ -->
+        <section id="tab-bible" class="p-5 space-y-4 hide">
+            <div class="card-3d p-5 bg-[#F4EAD8]/60">
+                <h2 class="text-2xl font-black text-[#4A3222] mb-1">Чтение Писания</h2>
+                <p class="text-xs font-bold text-[#8B6B4E] mb-4">Синодальный перевод Нового Завета</p>
+                
+                <div class="flex gap-2.5">
+                    <select id="bible-book-select" onchange="renderBibleChapter()" class="flex-1 p-3.5 rounded-2xl bg-white border-2 border-[#D5C3A6] font-extrabold text-[#4A3222] text-sm focus:outline-none">
+                        <option value="matthew">Евангелие от Матфея</option>
+                        <option value="mark">Евангелие от Марка</option>
+                        <option value="luke">Евангелие от Луки</option>
+                        <option value="john">Евангелие от Иоанна</option>
+                    </select>
+                    <select id="bible-chapter-select" onchange="renderBibleChapter()" class="w-28 p-3.5 rounded-2xl bg-white border-2 border-[#D5C3A6] font-extrabold text-[#4A3222] text-sm focus:outline-none">
+                        <option value="1">Глава 1</option>
+                        <option value="2">Глава 2</option>
+                        <option value="5">Глава 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card-3d p-6 space-y-4">
+                <h3 id="bible-title" class="text-lg font-black text-[#8B5A2B] border-b-2 border-[#F2E9D8] pb-3">Евангелие от Матфея • Глава 1</h3>
+                <div id="bible-Verses-box" class="space-y-3.5 text-[#4A3222] text-base leading-relaxed font-semibold max-h-[58vh] overflow-y-auto pr-1">
+                    <!-- Заполняется через JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ВКЛАДКА: СТИХ ДНЯ -->
+        <section id="tab-verse" class="p-5 space-y-5 hide">
+            <div class="text-center pt-2">
+                <span class="px-4 py-1.5 rounded-full bg-[#F4EAD8] text-[#8B5A2B] font-extrabold text-xs uppercase tracking-widest">Духовное зерно</span>
+                <h2 class="text-2xl font-black text-[#4A3222] mt-2">Стих на сегодня</h2>
+            </div>
+
+            <div class="card-3d p-7 text-center relative overflow-hidden bg-gradient-to-b from-white to-[#FFF9EE]">
+                <i class="fas fa-quote-left text-4xl text-[#EFE6D5] mb-3"></i>
+                <p id="daily-verse-text" class="text-xl font-extrabold text-[#4A3222] leading-relaxed mb-5">
+                    «Всё могу в укрепляющем меня Иисусе Христе.»
+                </p>
+                <div class="w-16 h-1 bg-[#D5C3A6] mx-auto mb-4 rounded-full"></div>
+                <p id="daily-verse-ref" class="font-black text-[#8B5A2B] uppercase tracking-wider text-sm">Послание к Филиппийцам 4:13</p>
+            </div>
+
+            <div class="card-3d p-5 bg-[#FFFBF2]">
+                <h4 class="font-black text-[#5C4033] text-sm uppercase tracking-wider mb-1">💡 О чём этот стих?</h4>
+                <p id="daily-verse-meaning" class="text-sm font-bold text-[#7A5C43] leading-relaxed">
+                    Апостол Павел напоминает нам, что истинная внутренняя сила приходит тогда, когда мы доверяем Богу в любых жизненных трудностях.
+                </p>
+            </div>
+
+            <button onclick="nextDailyVerse()" class="btn-duo-beige w-full py-4 rounded-2xl font-black text-base uppercase tracking-wider">
+                <i class="fas fa-rotate mr-2"></i> Другой вдохновляющий стих
+            </button>
+        </section>
+
+        <!-- 4. ВКЛАДКА: ДОСТИЖЕНИЯ (НАГРАДЫ) -->
+        <section id="tab-achievements" class="p-5 space-y-5 hide">
+            <div class="text-center">
+                <h2 class="text-2xl font-black text-[#4A3222]">Зал Наград</h2>
+                <p class="text-sm font-bold text-[#8B6B4E]">Твои духовные вехи и достижения</p>
+            </div>
+
+            <div id="achievements-grid" class="grid grid-cols-2 gap-4">
+                <!-- Генерируется через JS -->
+            </div>
+        </section>
+
+        <!-- 5. ВКЛАДКА: ПРОФИЛЬ -->
+        <section id="tab-profile" class="p-5 space-y-5 hide">
+            <div class="card-3d p-6 text-center relative">
+                <div id="profile-avatar-circle" class="w-24 h-24 rounded-full bg-[#8B5A2B] text-white font-black text-4xl flex items-center justify-center mx-auto mb-3 border-4 border-[#F4EAD8] shadow-md uppercase">
+                    И
+                </div>
+                <h2 id="profile-display-name" class="text-2xl font-black text-[#4A3222]">Илона</h2>
+                <p id="profile-display-email" class="text-sm font-bold text-[#8B6B4E] mb-2">email@icloud.com</p>
+                <span id="profile-role-badge" class="inline-block px-3.5 py-1 rounded-full bg-[#F4EAD8] text-[#8B5A2B] font-extrabold text-xs uppercase tracking-wider">
+                    Ученик Света
+                </span>
+
+                <div class="grid grid-cols-3 gap-3 mt-6 pt-6 border-t-2 border-[#F2E9D8]">
+                    <div class="bg-[#FDFBF7] p-3 rounded-2xl border-2 border-[#EAE0CE]">
+                        <div class="text-xl font-black text-[#EAB308]" id="stat-stars">0</div>
+                        <div class="text-[11px] font-extrabold text-[#8B6B4E] uppercase">Звёзд</div>
+                    </div>
+                    <div class="bg-[#FDFBF7] p-3 rounded-2xl border-2 border-[#EAE0CE]">
+                        <div class="text-xl font-black text-[#8B5A2B]" id="stat-level">1</div>
+                        <div class="text-[11px] font-extrabold text-[#8B6B4E] uppercase">Уровень</div>
+                    </div>
+                    <div class="bg-[#FDFBF7] p-3 rounded-2xl border-2 border-[#EAE0CE]">
+                        <div class="text-xl font-black text-[#F59E0B]" id="stat-streak">1</div>
+                        <div class="text-[11px] font-extrabold text-[#8B6B4E] uppercase">Дней подряд</div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="logoutAccount()" class="btn-duo-beige w-full py-4 rounded-2xl font-black text-[#B83333] border-[#F0C2C2] uppercase tracking-wider">
+                <i class="fas fa-right-from-bracket mr-2"></i> Выйти из аккаунта
+            </button>
+        </section>
+
+        <!-- 6. СЕКРЕТНАЯ ВКЛАДКА: ПАНЕЛЬ СОЗДАТЕЛЯ (Только для Илоны) -->
+        <section id="tab-admin" class="p-5 space-y-5 hide">
+            <div class="bg-gradient-to-r from-[#8B5A2B] to-[#6B421B] text-white p-5 rounded-3xl shadow-md">
+                <div class="flex items-center gap-3 mb-1">
+                    <i class="fas fa-crown text-2xl text-[#FCD34D]"></i>
+                    <h2 class="text-xl font-black">Панель Создателя</h2>
+                </div>
+                <p class="text-xs text-[#F4EAD8] font-bold">Полное управление профилями и прогрессом учеников</p>
+            </div>
+
+            <!-- Быстрое добавление тестового ученика для проверки -->
+            <div class="card-3d p-4 flex items-center justify-between">
+                <div>
+                    <h4 class="font-black text-[#4A3222] text-sm">Все аккаунты системы</h4>
+                    <p class="text-xs font-bold text-[#8B6B4E]">Ты можешь добавлять звёзды или удалять профили</p>
+                </div>
+                <span id="admin-total-count" class="bg-[#F4EAD8] text-[#8B5A2B] font-black px-3 py-1 rounded-xl text-sm">1</span>
+            </div>
+
+            <div id="admin-users-container" class="space-y-3">
+                <!-- Список пользователей рендерится через JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= МОДАЛЬНОЕ ОКНО КАРТОЧКИ ФАКТА ================= -->
+    <div id="fact-modal" class="fixed inset-0 max-w-[480px] mx-auto bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6 hide">
+        <div class="card-3d p-7 w-full text-center bg-[#FDFBF7] animate-bounce-once">
+            <div id="fact-icon" class="w-20 h-20 rounded-full bg-[#F4EAD8] flex items-center justify-center text-4xl mx-auto mb-4 border-2 border-[#D5C3A6]">📜</div>
+            <h3 id="fact-title" class="text-2xl font-black text-[#4A3222] mb-3">Заголовок</h3>
+            <p id="fact-desc" class="text-base font-bold text-[#6E5039] leading-relaxed mb-6">Текст карточки</p>
+            <button onclick="closeFactCard()" class="btn-duo-brown w-full py-3.5 rounded-2xl font-black uppercase tracking-wider">Понятно!</button>
         </div>
+    </div>
+
+    <!-- ================= ПОЛНОЭКРАННЫЙ 4-ШАГОВЫЙ УРОК ================= -->
+    <div id="lesson-overlay" class="fixed inset-0 max-w-[480px] mx-auto bg-[#FDFBF7] z-50 flex flex-col justify-between p-6 hide">
         
-        <!-- ВКЛАДКА: АДМИН ПАНЕЛЬ (Только для Илоны) -->
-        <div id="tab-admin" class="p-6 hide">
-            <h2 class="text-2xl font-bold text-[#5C4033] mb-6 text-center"><i class="fas fa-crown text-yellow-500 mr-2"></i>Панель Создателя</h2>
-            <div class="bg-white p-4 rounded-3xl shadow-sm border-2 border-[#D2B48C]">
-                <h3 class="font-bold text-[#8B5A2B] mb-4">Все зарегистрированные ученики:</h3>
-                <ul id="admin-list" class="divide-y divide-[#F5F1E7]"></ul>
+        <!-- Верхняя полоса прогресса урока -->
+        <div class="flex items-center gap-4">
+            <button onclick="closeLessonModal()" class="text-[#A68A6D] hover:text-[#5C4033] text-2xl font-black">
+                <i class="fas fa-xmark"></i>
+            </button>
+            <div class="flex-1 h-4 bg-[#EAE0CE] rounded-full overflow-hidden p-0.5">
+                <div id="lesson-progress-bar" class="h-full bg-[#8B5A2B] rounded-full transition-all duration-300" style="width: 25%"></div>
+            </div>
+            <span id="lesson-step-label" class="text-xs font-black text-[#8B5A2B]">1/4</span>
+        </div>
+
+        <!-- ШАГ 1: ТЕОРИЯ + АНГеЛОЧЕК + ПЕРЕВОРАЧИВАЮЩАЯСЯ КАРТОЧКА -->
+        <div id="lesson-step-1" class="flex-1 flex flex-col justify-center space-y-6 my-4">
+            <div class="flex items-center gap-3 bg-[#FFF8EB] p-4 rounded-3xl border-2 border-[#E6DEC8]">
+                <div class="text-4xl mascot-float">👼</div>
+                <div>
+                    <span id="lesson-title-badge" class="text-[11px] font-black uppercase tracking-wider text-[#B57C0E]">Урок 1</span>
+                    <p id="lesson-theory-text" class="text-sm font-extrabold text-[#4A3222] leading-snug mt-0.5">Теория урока...</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p class="text-xs font-extrabold uppercase tracking-wider text-[#8B6B4E] mb-2">👆 Нажми на карточку, чтобы перевернуть</p>
+                <div id="lesson-flip-card" onclick="this.classList.toggle('flipped')" class="perspective cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <span class="text-4xl mb-2">🕊️</span>
+                            <h3 id="flip-front-text" class="text-xl font-black text-[#4A3222]">Вопрос на карточке</h3>
+                            <span class="text-xs font-bold text-[#A68A6D] mt-3">Коснись для ответа</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="text-3xl mb-2">✨</span>
+                            <p id="flip-back-text" class="text-base font-extrabold text-[#5C4033]">Ответ на обороте карточки</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО УРОКА -->
-    <div id="lesson-modal" class="absolute inset-0 bg-[#F5F1E7] z-[100] flex flex-col hide">
-        <div class="flex-1 p-6 flex flex-col justify-center items-center text-center">
-            <h2 class="text-3xl font-bold text-[#5C4033] mb-4">Урок 1</h2>
-            <div class="bg-white p-8 rounded-3xl border-2 border-[#D2B48C] shadow-sm w-full">
-                <p class="text-[#5C4033] text-lg">Вы успешно начали изучение основ!</p>
+        <!-- ШАГ 2: ДРЕВНЕЕ СЛОВО (Греческий/Арамейский оригинал) -->
+        <div id="lesson-step-2" class="flex-1 flex flex-col justify-center items-center text-center space-y-5 my-4 hide">
+            <div class="w-16 h-16 rounded-full bg-[#F4EAD8] border-2 border-[#D5C3A6] flex items-center justify-center text-3xl">🏺</div>
+            <div>
+                <span class="text-xs font-black uppercase tracking-widest text-[#8B5A2B]">Древнее слово урока</span>
+                <h2 class="text-2xl font-black text-[#4A3222] mt-1">Тайна оригинала</h2>
+            </div>
+
+            <div class="card-3d p-7 w-full bg-white space-y-3">
+                <p id="ancient-lang" class="text-xs font-extrabold uppercase text-[#A68A6D]">Древнегреческий язык</p>
+                <div id="ancient-original" class="text-4xl font-black text-[#8B5A2B] tracking-wide">Εὐαγγέλιον</div>
+                <div id="ancient-translit" class="text-lg font-extrabold text-[#5C4033]">(Эванге́лион)</div>
+                <div class="w-12 h-1 bg-[#EAE0CE] mx-auto my-2 rounded-full"></div>
+                <p id="ancient-meaning" class="text-sm font-bold text-[#6E5039] leading-relaxed">
+                    Дословно означает «Добрая, радостная весть» о спасении.
+                </p>
             </div>
         </div>
-        <div class="p-6">
-            <button onclick="closeLesson()" class="btn-3d w-full bg-[#8B5A2B] text-white py-4 rounded-2xl font-bold text-xl uppercase">Завершить</button>
+
+        <!-- ШАГ 3: ИНТЕРАКТИВНЫЙ ТЕСТ -->
+        <div id="lesson-step-3" class="flex-1 flex flex-col justify-center space-y-5 my-4 hide">
+            <div>
+                <span class="text-xs font-black uppercase tracking-wider text-[#8B5A2B]">Проверка знаний</span>
+                <h3 id="quiz-question" class="text-xl font-black text-[#4A3222] mt-1">Текст вопроса?</h3>
+            </div>
+
+            <div id="quiz-options" class="space-y-3">
+                <!-- Варианты ответа генерируются в JS -->
+            </div>
+
+            <div id="quiz-feedback" class="p-4 rounded-2xl font-extrabold text-sm hide"></div>
         </div>
+
+        <!-- ШАГ 4: ПОБЕДНЫЙ ЭКРАН ЗАВЕРШЕНИЯ -->
+        <div id="lesson-step-4" class="flex-1 flex flex-col justify-center items-center text-center space-y-5 my-4 hide">
+            <div class="text-7xl mascot-float">🏆</div>
+            <h2 class="text-3xl font-black text-[#4A3222]">Урок пройден!</h2>
+            <p class="text-base font-bold text-[#8B6B4E]">Ты делаешь прекрасные шаги в изучении Нового Завета.</p>
+
+            <div class="flex gap-4 w-full">
+                <div class="flex-1 card-3d p-4 bg-[#FFFBEB] border-[#F2DC79]">
+                    <div class="text-xs font-black uppercase text-[#B45309]">Награда</div>
+                    <div class="text-2xl font-black text-[#EAB308] mt-1">+15 ⭐</div>
+                </div>
+                <div class="flex-1 card-3d p-4 bg-[#F4EAD8]">
+                    <div class="text-xs font-black uppercase text-[#8B5A2B]">Статус</div>
+                    <div class="text-lg font-black text-[#4A3222] mt-1">Открыт след.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка внизу урока -->
+        <button id="lesson-next-btn" onclick="nextLessonStep()" class="btn-duo-brown w-full py-4 rounded-2xl font-black text-lg uppercase tracking-wider">
+            Продолжить
+        </button>
     </div>
 
-    <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
-    <div id="bottom-nav" class="bg-white border-t-2 border-[#D2B48C] flex justify-around p-2 pb-6 absolute bottom-0 w-full hide z-40">
-        <button onclick="switchTab('map')" class="nav-btn text-[#8B5A2B] flex flex-col items-center w-16 pt-2"><i class="fas fa-map-marked-alt text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Путь</span></button>
-        <button onclick="switchTab('bible')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-book-bible text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Библия</span></button>
-        <button onclick="switchTab('verse')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-sun text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Стих</span></button>
-        <button onclick="switchTab('achievements')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-medal text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Награды</span></button>
-        <button onclick="switchTab('profile')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-user text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Профиль</span></button>
-        <button id="admin-btn" onclick="switchTab('admin')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2 hide"><i class="fas fa-crown text-2xl text-yellow-500"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Админ</span></button>
-    </div>
+    <!-- ================= НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ ================= -->
+    <nav id="bottom-nav" class="fixed bottom-0 max-w-[480px] w-full bg-[#FDFBF7] border-t-2 border-[#EAE0CE] px-2 py-2 pb-5 flex justify-around items-center z-30 hide">
+        <button onclick="switchMainTab('map', this)" class="nav-item flex flex-col items-center py-1 px-2 rounded-xl text-[#8B5A2B]">
+            <i class="fas fa-map-location-dot text-xl"></i>
+            <span class="text-[10px] font-black uppercase mt-1">Путь</span>
+        </button>
+        <button onclick="switchMainTab('bible', this)" class="nav-item flex flex-col items-center py-1 px-2 rounded-xl text-[#B8A68E]">
+            <i class="fas fa-book-bible text-xl"></i>
+            <span class="text-[10px] font-black uppercase mt-1">Библия</span>
+        </button>
+        <button onclick="switchMainTab('verse', this)" class="nav-item flex flex-col items-center py-1 px-2 rounded-xl text-[#B8A68E]">
+            <i class="fas fa-sun text-xl"></i>
+            <span class="text-[10px] font-black uppercase mt-1">Стих</span>
+        </button>
+        <button onclick="switchMainTab('achievements', this)" class="nav-item flex flex-col items-center py-1 px-2 rounded-xl text-[#B8A68E]">
+            <i class="fas fa-award text-xl"></i>
+            <span class="text-[10px] font-black uppercase mt-1">Награды</span>
+        </button>
+        <button onclick="switchMainTab('profile', this)" class="nav-item flex flex-col items-center py-1 px-2 rounded-xl text-[#B8A68E]">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-[10px] font-black uppercase mt-1">Профиль</span>
+        </button>
+        <!-- Секретная кнопка Создателя (Видна только Илоне) -->
+        <button id="admin-nav-tab" onclick="switchMainTab('admin', this)" class="nav-item flex flex-col items-center py-1 px-2 rounded-xl text-[#D97706] hide">
+            <i class="fas fa-crown text-xl"></i>
+            <span class="text-[10px] font-black uppercase mt-1">Админ</span>
+        </button>
+    </nav>
+
 </div>
 
 <script>
-    function checkAuth() {
-        const user = localStorage.getItem('svet_current_user');
-        if (user) {
-            document.getElementById('auth-screen').classList.add('hide');
-            document.getElementById('main-content').classList.remove('hide');
-            document.getElementById('bottom-nav').classList.remove('hide');
-            
-            document.getElementById('profile-email-text').innerText = user;
+    // ================= БАЗА УРОКОВ (4 ШАГА В КАЖДОМ) =================
+    const LESSONS_DATA = [
+        {
+            id: 1,
+            title: "Рождество Христово",
+            icon: "fa-star",
+            theory: "Иисус Христос родился в городе Вифлееме. Первыми о Его рождении от ангелов узнали простые пастухи, а мудрецы с Востока пришли за путеводной звездой.",
+            flipFront: "В каком городе родился Иисус Христос?",
+            flipBack: "В Вифлееме Иудейском, как и предсказывали древние пророки.",
+            ancientLang: "Древнегреческий оригинал",
+            ancientWord: "Εὐαγγέλιον",
+            ancientTranslit: "(Эванге́лион — Евангелие)",
+            ancientMeaning: "Означает «Благая (радостная) весть» о том, что Спаситель пришёл в мир.",
+            question: "Кто привел восточных мудрецов (волхвов) к младенцу Иисусу?",
+            options: ["Путеводная звезда на небе", "Римский правитель", "Свиток из храма"],
+            correct: 0
+        },
+        {
+            id: 2,
+            title: "Крещение на Иордане",
+            icon: "fa-water",
+            theory: "В возрасте 30 лет Иисус пришел к реке Иордан, где пророк Иоанн Предтеча крестил людей. Во время крещения Дух Святой сошел с небес в виде голубя.",
+            flipFront: "Кто крестил Иисуса в водах реки Иордан?",
+            flipBack: "Пророк Иоанн Предтеча (Иоанн Креститель).",
+            ancientLang: "Греческое слово",
+            ancientWord: "Βάπτισμα",
+            ancientTranslit: "(Ба́птисма — Крещение)",
+            ancientMeaning: "Буквально переводится как «погружение в воду» — символ духовного очищения и новой жизни.",
+            question: "В каком образе Дух Святой сошел на Иисуса при Крещении?",
+            options: ["В виде огненного столпа", "В виде белого голубя", "В виде яркой молнии"],
+            correct: 1
+        },
+        {
+            id: 3,
+            title: "Двенадцать Апостолов",
+            icon: "fa-users",
+            theory: "Иисус избрал 12 ближайших учеников, чтобы они шли за Ним, учились любви и несли Евангелие всем народам. Среди них были простые рыбаки Петр, Андрей, Иаков и Иоанн.",
+            flipFront: "Кем по профессии были первые ученики Христа — Петр и Андрей?",
+            flipBack: "Они были простыми галилейскими рыбаками. Иисус сказал им: «Я сделаю вас ловцами человеков».",
+            ancientLang: "Древнегреческий титул",
+            ancientWord: "Ἀπόστολος",
+            ancientTranslit: "(Апо́столос — Апостол)",
+            ancientMeaning: "Означает «Посланник» — человек, отправленный с особым важным поручением.",
+            question: "Сколько ближайших апостолов избрал Иисус Христос?",
+            options: ["Семь", "Двенадцать", "Сорок"],
+            correct: 1
+        },
+        {
+            id: 4,
+            title: "Нагорная Проповедь",
+            icon: "fa-mountain-sun",
+            theory: "На склоне горы Иисус произнес Свою самую известную речь. Он дал Заповеди Блаженства и научил людей главной молитве — «Отче наш».",
+            flipFront: "Какую главную молитву подарил нам Иисус в Нагорной проповеди?",
+            flipBack: "Молитву Господню — «Отче наш, сущий на небесах...»",
+            ancientLang: "Библейское понятие",
+            ancientWord: "Μακάριοι",
+            ancientTranslit: "(Мака́риои — Блаженны)",
+            ancientMeaning: "Означает высшую духовную радость и счастье человека, живущего с Богом.",
+            question: "С каких слов начинаются Заповеди в Нагорной проповеди?",
+            options: ["«Блаженны...»", "«Бойтесь...»", "«Спешите...»"],
+            correct: 0
+        },
+        {
+            id: 5,
+            title: "Притчи о Любви и Милосердии",
+            icon: "fa-hand-holding-heart",
+            theory: "В притче о Добром Самарянине Иисус показал, что наш ближний — это любой человек, который нуждается в нашей помощи, независимо от его национальности.",
+            flipFront: "Чему учит притча о Блудном сыне?",
+            flipBack: "Безграничному прощению и любви Небесного Отца к каждому, кто искренне кается.",
+            ancientLang: "Греческое слово любви",
+            ancientWord: "Ἀγάπη",
+            ancientTranslit: "(Ага́пэ — Безусловная любовь)",
+            ancientMeaning: "Жертвенная, бескорыстная любовь к Богу и ближнему, которая не ищет своей выгоды.",
+            question: "Кто помог израненному путнику в известной притче Христа?",
+            options: ["Милосердный Самарянин", "Богатый купец", "Стражник"],
+            correct: 0
+        }
+    ];
 
-            // Если в почте есть ilona — открываем админку
-            if (user.toLowerCase().includes('ilona')) {
-                document.getElementById('admin-btn').classList.remove('hide');
-                loadAdminPanel();
-            } else {
-                document.getElementById('admin-btn').classList.add('hide');
-            }
+    // ================= БАЗА ТЕКСТОВ БИБЛИИ =================
+    const BIBLE_TEXTS = {
+        "matthew_1": {
+            title: "Евангелие от Матфея • Глава 1",
+            verses: [
+                "1. Родословие Иисуса Христа, Сына Давидова, Сына Авраамова.",
+                "2. Авраам родил Исаака; Исаак родил Иакова; Иаков родил Иуду и братьев его...",
+                "16. Иаков родил Иосифа, мужа Марии, от Которой родился Иисус, называемый Христос.",
+                "18. Рождество Иисуса Христа было так: по обручении Матери Его Марии с Иосифом, прежде нежели сочетались они, оказалось, что Она имеет во чреве от Духа Святого.",
+                "20. Но когда он помыслил это, — се, Ангел Господень явился ему во сне и сказал: Иосиф, сын Давидов! не бойся принять Марию, жену твою...",
+                "21. Родит же Сына, и наречешь Ему имя Иисус, ибо Он спасет людей Своих от грехов их.",
+                "23. «Се, Дева во чреве приимет и родит Сына, и нарекут имя Ему Еммануил, что значит: с нами Бог»."
+            ]
+        },
+        "matthew_2": {
+            title: "Евангелие от Матфея • Глава 2",
+            verses: [
+                "1. Когда же Иисус родился в Вифлееме Иудейском во дни царя Ирода, пришли в Иерусалим волхвы с востока и говорят:",
+                "2. Где родившийся Царь Иудейский? ибо мы видели звезду Его на востоке и пришли поклониться Ему.",
+                "9. Они, выслушав царя, пошли. И се, звезда, которую видели они на востоке, шла перед ними, как наконец пришла и остановилась над местом, где был Младенец.",
+                "10. Увидев же звезду, они возрадовались радостью весьма великою,",
+                "11. И, войдя в дом, увидели Младенца с Мариею, Матерью Его, и, пав, поклонились Ему; и, открыв сокровища свои, принесли Ему дары: золото, ладан и смирну."
+            ]
+        },
+        "matthew_5": {
+            title: "Евангелие от Матфея • Глава 5 (Нагорная проповедь)",
+            verses: [
+                "1. Увидев народ, Он взошел на гору; и, когда сел, приступили к Нему ученики Его.",
+                "3. Блаженны нищие духом, ибо их есть Царство Небесное.",
+                "4. Блаженны плачущие, ибо они утешатся.",
+                "5. Блаженны кроткие, ибо они наследуют землю.",
+                "6. Блаженны алчущие и жаждущие правды, ибо они насытятся.",
+                "7. Блаженны милостивые, ибо они помилованы будут.",
+                "8. Блаженны чистые сердцем, ибо они Бога узрят.",
+                "9. Блаженны миротворцы, ибо они будут наречены сынами Божиими.",
+                "14. Вы — свет мира. Не может укрыться город, стоящий на верху горы."
+            ]
+        },
+        "mark_1": {
+            title: "Евангелие от Марка • Глава 1",
+            verses: [
+                "1. Начало Евангелия Иисуса Христа, Сына Божия,",
+                "4. Явился Иоанн, крестя в пустыне и проповедуя крещение покаяния для прощения грехов.",
+                "9. И было в те дни, пришел Иисус из Назарета Галилейского и крестился от Иоанна в Иордане.",
+                "11. И глас был с небес: Ты Сын Мой Возлюбленный, в Котором Мое благоволение.",
+                "15. И говорил Иисус: исполнилось время и приблизилось Царствие Божие: покайтесь и веруйте в Евангелие."
+            ]
+        },
+        "luke_1": {
+            title: "Евангелие от Луки • Глава 1",
+            verses: [
+                "26. В шестой же месяц послан был Ангел Гавриил от Бога в город Галилейский, называемый Назарет,",
+                "27. К Деве, обрученной мужу, именем Иосифу, из дома Давидова; имя же Деве: Мария.",
+                "28. Ангел, войдя к Ней, сказал: радуйся, Благодатная! Господь с Тобою; благословенна Ты между женами.",
+                "30. И сказал Ей Ангел: не бойся, Мария, ибо Ты обрела благодать у Бога;",
+                "31. И вот, зачнешь во чреве, и родишь Сына, и наречешь Ему имя: Иисус."
+            ]
+        },
+        "john_1": {
+            title: "Евангелие от Иоанна • Глава 1",
+            verses: [
+                "1. В начале было Слово, и Слово было у Бога, и Слово было Бог.",
+                "2. Оно было в начале у Бога.",
+                "3. Все чрез Него начало быть, и без Него ничто не начало быть, что начало быть.",
+                "4. В Нем была жизнь, и жизнь была свет человеков.",
+                "5. И свет во тьме светит, и тьма не объяла его.",
+                "14. И Слово стало плотию, и обитало с нами, полное благодати и истины; и мы видели славу Его, славу, как Единородного от Отца."
+            ]
+        }
+    };
+
+    const DAILY_VERSES = [
+        {
+            text: "«Всё могу в укрепляющем меня Иисусе Христе.»",
+            ref: "Послание к Филиппийцам 4:13",
+            meaning: "Истинная внутренняя сила приходит тогда, когда мы доверяем Богу в любых жизненных трудностях и начинаниях."
+        },
+        {
+            text: "«Бог есть любовь, и пребывающий в любви пребывает в Боге, и Бог в нём.»",
+            ref: "1-е послание Иоанна 4:16",
+            meaning: "Доброта, милосердие и искренняя забота о ближних — это самый верный путь почувствовать присутствие Божие в своей жизни."
+        },
+        {
+            text: "«Просите, и дано будет вам; ищите, и найдете; стучите, и отворят вам.»",
+            ref: "Евангелие от Матфея 7:7",
+            meaning: "Господь всегда слышит искреннюю молитву и открывает двери тем, кто стремится к свету, знаниям и добру."
+        }
+    ];
+
+    // ================= СОСТОЯНИЕ И БАЗА ПОЛЬЗОВАТЕЛЕЙ =================
+    let authMode = 'login'; // 'login' | 'register'
+    let currentUser = null;
+    let activeLesson = null;
+    let currentStep = 1;
+    let quizAnswered = false;
+    let verseIndex = 0;
+
+    function getUsersDB() {
+        const raw = localStorage.getItem('svet_very_accounts_v2');
+        if (!raw) {
+            // Создаём демо-ученика, чтобы Илона сразу видела список в Админке
+            const initial = [
+                {
+                    name: "Мария (Ученица)",
+                    email: "maria@example.com",
+                    pass: "123456",
+                    level: 2,
+                    stars: 15,
+                    streak: 3
+                }
+            ];
+            localStorage.setItem('svet_very_accounts_v2', JSON.stringify(initial));
+            return initial;
+        }
+        return JSON.parse(raw);
+    }
+
+    function saveUsersDB(list) {
+        localStorage.setItem('svet_very_accounts_v2', JSON.stringify(list));
+    }
+
+    function isAdminUser(user) {
+        if (!user || !user.email) return false;
+        const em = user.email.toLowerCase();
+        const nm = (user.name || '').toLowerCase();
+        return em.includes('ilona') || nm.includes('илона') || nm.includes('ilona');
+    }
+
+    // ================= АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ =================
+    function setAuthMode(mode) {
+        authMode = mode;
+        const loginBtn = document.getElementById('tab-login-btn');
+        const regBtn = document.getElementById('tab-reg-btn');
+        const nameWrap = document.getElementById('name-field-wrap');
+        const submitBtn = document.getElementById('auth-submit-btn');
+        document.getElementById('auth-error-box').classList.add('hide');
+
+        if (mode === 'login') {
+            loginBtn.className = "flex-1 py-2.5 rounded-xl font-extrabold text-sm transition-all bg-white text-[#5C4033] shadow-sm";
+            regBtn.className = "flex-1 py-2.5 rounded-xl font-extrabold text-sm transition-all text-[#8B6B4E]";
+            nameWrap.classList.add('hide');
+            submitBtn.innerText = "Войти в аккаунт";
         } else {
-            document.getElementById('auth-screen').classList.remove('hide');
-            document.getElementById('main-content').classList.add('hide');
-            document.getElementById('bottom-nav').classList.add('hide');
+            regBtn.className = "flex-1 py-2.5 rounded-xl font-extrabold text-sm transition-all bg-white text-[#5C4033] shadow-sm";
+            loginBtn.className = "flex-1 py-2.5 rounded-xl font-extrabold text-sm transition-all text-[#8B6B4E]";
+            nameWrap.classList.remove('hide');
+            submitBtn.innerText = "Создать аккаунт";
         }
     }
 
-    function handleAuth() {
-        const email = document.getElementById('email-input').value.trim();
-        const pass = document.getElementById('pass-input').value;
-        const err = document.getElementById('auth-error');
+    function showAuthError(msg) {
+        const box = document.getElementById('auth-error-box');
+        document.getElementById('auth-error-text').innerText = msg;
+        box.classList.remove('hide');
+    }
 
-        if (!email.includes('@')) {
-            err.innerText = "Введите корректный Email";
-            err.classList.remove('hide');
+    function submitAuth() {
+        const email = document.getElementById('auth-email').value.trim().toLowerCase();
+        const pass = document.getElementById('auth-pass').value;
+        const nameInput = document.getElementById('auth-name').value.trim();
+
+        if (!email || !email.includes('@')) {
+            showAuthError("Введите корректный адрес почты (с символом @)");
             return;
         }
         if (pass.length < 6) {
-            err.innerText = "Пароль должен быть от 6 символов";
-            err.classList.remove('hide');
+            showAuthError("Пароль должен состоять минимум из 6 символов");
             return;
         }
 
-        err.classList.add('hide');
-        localStorage.setItem('svet_current_user', email);
+        let users = getUsersDB();
+        let existing = users.find(u => u.email.toLowerCase() === email);
 
-        let db = JSON.parse(localStorage.getItem('svet_users_db') || '[]');
-        if (!db.includes(email)) {
-            db.push(email);
-            localStorage.setItem('svet_users_db', JSON.stringify(db));
-        }
-
-        checkAuth();
-        switchTab('map');
-    }
-
-    function logoutUser() {
-        localStorage.removeItem('svet_current_user');
-        document.getElementById('email-input').value = '';
-        document.getElementById('pass-input').value = '';
-        checkAuth();
-    }
-
-    function switchTab(tabId) {
-        ['map', 'bible', 'verse', 'achievements', 'profile', 'admin'].forEach(id => {
-            const el = document.getElementById('tab-' + id);
-            if(el) el.classList.add('hide');
-        });
-        document.getElementById('tab-' + tabId).classList.remove('hide');
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            if(!btn.classList.contains('text-yellow-500')) {
-                btn.classList.remove('text-[#8B5A2B]');
-                btn.classList.add('text-[#D2B48C]');
+        if (authMode === 'register') {
+            if (existing) {
+                // Если уже есть — просто авторизуем, чтобы не путать пользователя
+                currentUser = existing;
+            } else {
+                const displayName = nameInput || (email.includes('ilona') ? 'Илона' : email.split('@')[0]);
+                const newUser = {
+                    name: displayName,
+                    email: email,
+                    pass: pass,
+                    level: 1,
+                    stars: 0,
+                    streak: 1
+                };
+                users.push(newUser);
+                saveUsersDB(users);
+                currentUser = newUser;
             }
-        });
-        if(event && event.currentTarget && !event.currentTarget.classList.contains('text-yellow-500')) {
-            event.currentTarget.classList.remove('text-[#D2B48C]');
-            event.currentTarget.classList.add('text-[#8B5A2B]');
+        } else {
+            // Режим Входа: если аккаунта ещё нет на этом устройстве, создаём его автоматически без ошибки!
+            if (!existing) {
+                const autoName = email.includes('ilona') ? 'Илона' : email.split('@')[0];
+                existing = {
+                    name: autoName,
+                    email: email,
+                    pass: pass,
+                    level: 1,
+                    stars: 0,
+                    streak: 1
+                };
+                users.push(existing);
+                saveUsersDB(users);
+            }
+            currentUser = existing;
+        }
+
+        localStorage.setItem('svet_very_active_email', currentUser.email);
+        enterApp();
+    }
+
+    function enterApp() {
+        document.getElementById('auth-screen').classList.add('hide');
+        document.getElementById('top-bar').classList.remove('hide');
+        document.getElementById('main-area').classList.remove('hide');
+        document.getElementById('bottom-nav').classList.remove('hide');
+
+        // Проверяем права Создателя для Илоны
+        const adminTab = document.getElementById('admin-nav-tab');
+        if (isAdminUser(currentUser)) {
+            adminTab.classList.remove('hide');
+        } else {
+            adminTab.classList.add('hide');
+        }
+
+        updateAllUI();
+        renderBibleChapter();
+    }
+
+    function logoutAccount() {
+        localStorage.removeItem('svet_very_active_email');
+        currentUser = null;
+        document.getElementById('auth-pass').value = '';
+        document.getElementById('auth-screen').classList.remove('hide');
+        document.getElementById('top-bar').classList.add('hide');
+        document.getElementById('main-area').classList.add('hide');
+        document.getElementById('bottom-nav').classList.add('hide');
+    }
+
+    // ================= ОБНОВЛЕНИЕ ИНТЕРФЕЙСА И КАРТЫ =================
+    function updateAllUI() {
+        if (!currentUser) return;
+
+        // Верхняя панель
+        document.getElementById('header-stars').innerText = currentUser.stars;
+        document.getElementById('header-streak').innerText = currentUser.streak || 1;
+
+        // Приветствие ангелочка
+        document.getElementById('mascot-greeting').innerText = 
+            `${currentUser.name}, твой текущий открытый урок — №${currentUser.level}. Нажми на него, чтобы продолжить путь!`;
+
+        // Профиль
+        document.getElementById('profile-avatar-circle').innerText = (currentUser.name || 'У').charAt(0).toUpperCase();
+        document.getElementById('profile-display-name').innerText = currentUser.name;
+        document.getElementById('profile-display-email').innerText = currentUser.email;
+        document.getElementById('stat-stars').innerText = currentUser.stars;
+        document.getElementById('stat-level').innerText = currentUser.level;
+        document.getElementById('stat-streak').innerText = currentUser.streak || 1;
+
+        const roleBadge = document.getElementById('profile-role-badge');
+        if (isAdminUser(currentUser)) {
+            roleBadge.innerText = "👑 Создатель проекта";
+            roleBadge.className = "inline-block px-3.5 py-1 rounded-full bg-[#FEF3C7] text-[#B45309] font-extrabold text-xs uppercase tracking-wider border border-[#F59E0B]";
+        } else {
+            roleBadge.innerText = "Ученик Света";
+            roleBadge.className = "inline-block px-3.5 py-1 rounded-full bg-[#F4EAD8] text-[#8B5A2B] font-extrabold text-xs uppercase tracking-wider";
+        }
+
+        renderLevelsPath();
+        renderAchievements();
+        if (isAdminUser(currentUser)) {
+            renderAdminPanel();
         }
     }
 
-    function openLesson(num) { document.getElementById('lesson-modal').classList.remove('hide'); }
-    function closeLesson() { document.getElementById('lesson-modal').classList.add('hide'); }
+    function renderLevelsPath() {
+        const container = document.getElementById('levels-path-container');
+        container.innerHTML = `<div class="absolute w-3 bg-[#E6DEC8] h-full z-0 rounded-full left-1/2 -translate-x-1/2"></div>`;
 
-    function loadAdminPanel() {
-        const list = document.getElementById('admin-list');
-        const db = JSON.parse(localStorage.getItem('svet_users_db') || '[]');
-        list.innerHTML = '';
-        if(db.length === 0) {
-            list.innerHTML = '<li class="py-2 text-sm text-gray-500">Нет пользователей</li>';
+        const offsets = ["ml-0", "ml-[-95px]", "ml-0", "mr-[-95px]", "ml-0"];
+
+        LESSONS_DATA.forEach((lesson, idx) => {
+            const lvl = lesson.id;
+            const isCompleted = lvl < currentUser.level;
+            const isCurrent = lvl === currentUser.level;
+            const offsetClass = offsets[idx % offsets.length];
+
+            let nodeStyle = "node-locked";
+            let badgeHTML = "";
+            if (isCompleted) {
+                nodeStyle = "node-completed";
+                badgeHTML = `<div class="absolute -top-2 -right-2 bg-white text-[#E09F1F] w-7 h-7 rounded-full flex items-center justify-center shadow font-black text-xs border-2 border-[#E09F1F]"><i class="fas fa-check"></i></div>`;
+            } else if (isCurrent) {
+                nodeStyle = "node-active node-ActivePulse";
+                badgeHTML = `<div class="absolute -top-9 bg-[#8B5A2B] text-white text-[11px] font-black uppercase px-3 py-1 rounded-xl shadow animate-bounce">Старт</div>`;
+            }
+
+            const nodeWrap = document.createElement('div');
+            nodeWrap.className = `z-10 flex flex-col items-center ${offsetClass}`;
+            nodeWrap.innerHTML = `
+                <div class="relative flex flex-col items-center">
+                    ${badgeHTML}
+                    <button onclick="startLesson(${lvl})" class="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black transition transform active:scale-95 ${nodeStyle}">
+                        <i class="fas ${lesson.icon}"></i>
+                    </button>
+                </div>
+                <span class="mt-2.5 px-3 py-1 rounded-xl bg-white/90 border border-[#E6DEC8] font-extrabold text-xs text-[#4A3222] shadow-sm">
+                    ${lvl}. ${lesson.title}
+                </span>
+            `;
+            container.appendChild(nodeWrap);
+        });
+    }
+
+    function renderAchievements() {
+        const grid = document.getElementById('achievements-grid');
+        const badges = [
+            { icon: "🕊️", title: "Первый шаг", desc: "Начать обучение", unlocked: currentUser.level >= 1 },
+            { icon: "⭐", title: "Искатель", desc: "Пройти 1-й урок", unlocked: currentUser.level >= 2 },
+            { icon: "🏺", title: "Знаток слов", desc: "Набрать 30 звёзд", unlocked: currentUser.stars >= 30 },
+            { icon: "👑", title: "Мудрец Завета", desc: "Пройти все 5 уроков", unlocked: currentUser.level > 5 }
+        ];
+
+        grid.innerHTML = badges.map(b => `
+            <div class="card-3d p-4 text-center flex flex-col items-center ${b.unlocked ? 'bg-white' : 'opacity-50 bg-[#F5F0E6]'}">
+                <div class="w-16 h-16 rounded-full ${b.unlocked ? 'bg-[#FFF3DF] border-2 border-[#F59E0B]' : 'bg-[#E6DEC8]'} flex items-center justify-center text-3xl mb-3">
+                    ${b.icon}
+                </div>
+                <h4 class="font-black text-[#4A3222] text-sm">${b.title}</h4>
+                <p class="text-xs font-bold text-[#8B6B4E] mt-1">${b.desc}</p>
+                <span class="mt-3 text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${b.unlocked ? 'bg-[#DEF7EC] text-[#03543F]' : 'bg-[#EAE0CE] text-[#8B6B4E]'}">
+                    ${b.unlocked ? 'Получено ✓' : 'Закрыто'}
+                </span>
+            </div>
+        `).join('');
+    }
+
+    // ================= ЛОГИКА 4-ШАГОВОГО УРОКА =================
+    function startLesson(lvlId) {
+        if (lvlId > currentUser.level && !isAdminUser(currentUser)) {
+            openFactCard("Уровень пока закрыт 🔒", "🕊️", "Сначала пройди предыдущий урок по порядку, чтобы открыть эту тему!");
             return;
         }
-        db.forEach(u => {
-            list.innerHTML += `<li class="py-3 font-bold text-[#5C4033] text-sm">${u}</li>`;
-        });
-    }
+        activeLesson = LESSONS_DATA.find(l => l.id === lvlId);
+        if (!activeLesson) return;
 
-    window.onload = checkAuth;
-</script>
-</body>
-</html>
+        currentStep = 1;
+        quizAnswered = false;
+
+        // Заполняем данные урока
+        document.getElementById('lesson-title-badge').innerText = `Урок ${activeLesson.id} • ${activeLesson.title}`;
+        document.getElementById('lesson-theory-text').innerText = activeLesson.theory;
+        document.getElementById('flip-front-text').innerText = activeLesson.flipFront;
+        document.getElementById('flip-back-text').innerText = activeLesson.flipBack;
+        document.getElementById('lesson-flip-card').classList.remove('flipped');
+
+        document.getElementById('ancient-lang').innerText = activeLesson
