@@ -188,3 +188,1050 @@
             position: sticky;
             top: 0;
             z-index: 25;
+            background: rgba(253, 251, 247, 0.96);
+            border-bottom: 2px solid #EAE0CE;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 900;
+            font-size: 18px;
+        }
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: #F4EAD8;
+            border: 2px solid #D5C3A6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .stats-row {
+            display: flex;
+            gap: 10px;
+        }
+        .stat-pill {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pill-streak { background: #FFF3DF; border: 2px solid #F5D399; color: #B45309; }
+        .pill-stars { background: #FFF9DB; border: 2px solid #F2DC79; color: #A16207; }
+
+        /* Основной контент */
+        #main-area {
+            flex: 1;
+            padding: 18px 18px 105px;
+        }
+        .chapter-banner {
+            background: #8B5A2B;
+            color: #fff;
+            padding: 18px;
+            border-radius: 24px;
+            border-bottom: 4px solid #5C3A1B;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .cards-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+        }
+        .cards-scroll::-webkit-scrollbar { display: none; }
+        .fact-mini-card {
+            min-width: 152px;
+            cursor: pointer;
+        }
+        .fact-mini-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #F4EAD8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        /* Дорожка уровней */
+        .path-wrapper {
+            position: relative;
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+        }
+        .path-line {
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            width: 12px;
+            background: #E6DEC8;
+            border-radius: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        .level-item {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .offset-left { margin-left: -85px; }
+        .offset-right { margin-right: -85px; }
+        .level-circle {
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 4px solid #FFFDF9;
+            position: relative;
+        }
+        .lvl-done {
+            background: linear-gradient(145deg, #F5B727, #E09F1F);
+            color: #fff;
+            box-shadow: 0 7px 0 #B57C0E;
+        }
+        .lvl-current {
+            background: linear-gradient(145deg, #9C6735, #8B5A2B);
+            color: #fff;
+            box-shadow: 0 7px 0 #5C3A1B, 0 0 0 8px rgba(139, 90, 43, 0.18);
+        }
+        .lvl-locked {
+            background: #E8E0CE;
+            color: #A69982;
+            box-shadow: 0 7px 0 #C9BDA6;
+        }
+        .lvl-label {
+            margin-top: 10px;
+            background: #FFFFFF;
+            border: 2px solid #E6DEC8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .start-bubble {
+            position: absolute;
+            top: -32px;
+            background: #8B5A2B;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 10px;
+        }
+
+        /* 3D Карточка переворота в уроке */
+        .flip-wrap {
+            perspective: 1000px;
+            width: 100%;
+            height: 210px;
+            cursor: pointer;
+            margin: 14px 0;
+        }
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-wrap.flipped .flip-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-front, .flip-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .flip-front {
+            background: #FFFFFF;
+            border: 3px solid #D5C3A6;
+            box-shadow: 0 6px 0 #D5C3A6;
+        }
+        .flip-back {
+            background: #FFF8EB;
+            border: 3px solid #E09F1F;
+            box-shadow: 0 6px 0 #E09F1F;
+            transform: rotateY(180deg);
+        }
+
+        /* Нижняя навигация */
+        #bottom-nav {
+            position: fixed;
+            bottom: 0;
+            max-width: 480px;
+            width: 100%;
+            background: #FDFBF7;
+            border-top: 2px solid #EAE0CE;
+            padding: 8px 6px 20px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 30;
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #B8A68E;
+            font-weight: 800;
+            font-size: 10px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .nav-btn.active { color: #8B5A2B; }
+        .nav-btn .nav-ico { font-size: 20px; }
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.5);
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+        }
+        .lesson-fullscreen {
+            position: fixed;
+            inset: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            background: #FDFBF7;
+            z-index: 70;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 22px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .float-anim { animation: float 3s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- ================= 1. ЭКРАН ВХОДА И РЕГИСТРАЦИИ ================= -->
+    <div id="auth-screen">
+        <div class="logo-circle">
+            🕊️
+            <div class="logo-star">⭐</div>
+        </div>
+
+        <h1 style="font-size: 34px; font-weight: 900; margin-bottom: 4px;">Свет Веры</h1>
+        <p style="color: #8B6B4E; font-weight: 700; font-size: 14px;">Изучай Новый Завет шаг за шагом</p>
+
+        <!-- Переключатель Вход / Регистрация -->
+        <div class="mode-switch">
+            <button type="button" id="btn-mode-login" class="mode-btn active" onclick="setMode('login')">Вход</button>
+            <button type="button" id="btn-mode-reg" class="mode-btn" onclick="setMode('register')">Регистрация</button>
+        </div>
+
+        <div id="wrap-name" class="field-group hide">
+            <label class="field-label">Ваше Имя</label>
+            <input type="text" id="inp-name" class="field-input" placeholder="Например, Илона">
+        </div>
+
+        <div class="field-group">
+            <label class="field-label">Электронная почта</label>
+            <input type="email" id="inp-email" class="field-input" placeholder="ilona.agadjanyan@icloud.com">
+        </div>
+
+        <div class="field-group">
+            <label class="field-label">Пароль</label>
+            <input type="password" id="inp-pass" class="field-input" placeholder="Минимум 4 символа">
+        </div>
+
+        <div id="auth-err" class="error-banner hide"></div>
+
+        <button type="button" id="btn-auth-submit" class="btn-brown" style="margin-top: 16px;" onclick="handleAuthSubmit()">
+            Войти в аккаунт
+        </button>
+
+        <p style="margin-top: 24px; font-size: 12px; font-weight: 700; color: #A68A6D;">
+            Бесплатный образовательный проект • Новый Завет
+        </p>
+    </div>
+
+    <!-- ================= 2. ВЕРХНЯЯ ПАНЕЛЬ ================= -->
+    <header id="top-bar" class="hide">
+        <div class="brand-row">
+            <div class="brand-icon">🕊️</div>
+            <span>Свет Веры</span>
+        </div>
+        <div class="stats-row">
+            <div class="stat-pill pill-streak">🔥 <span id="top-streak">1</span></div>
+            <div class="stat-pill pill-stars">⭐ <span id="top-stars">0</span></div>
+        </div>
+    </header>
+
+    <!-- ================= 3. ОСНОВНЫЕ ВКЛАДКИ ================= -->
+    <main id="main-area" class="hide">
+
+        <!-- ВКЛАДКА: ПУТЬ -->
+        <section id="sec-map">
+            <div class="chapter-banner">
+                <div>
+                    <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #E6CCB2;">Раздел 1 • Основы</div>
+                    <div style="font-size: 20px; font-weight: 900; margin-top: 2px;">Земная жизнь Христа</div>
+                </div>
+                <div style="font-size: 28px; background: rgba(255,255,255,0.18); width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center;">📖</div>
+            </div>
+
+            <!-- Карточки знаний -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 14px; font-weight: 900; text-transform: uppercase;">Карточки знаний</span>
+                <span style="font-size: 12px; font-weight: 800; color: #8B5A2B;">Листай вбок →</span>
+            </div>
+
+            <div class="cards-scroll">
+                <div class="card-3d fact-mini-card" onclick="showFact('Язык Иисуса Христа', '📜', 'В повседневной жизни Иисус и апостолы говорили на арамейском языке, но книги Нового Завета были записаны на древнегреческом (койне), чтобы Благая весть была понятна всему миру.')">
+                    <div class="fact-mini-icon">📜</div>
+                    <div style="font-weight: 900; font-size: 14px;">Язык Христа</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #9C826B; margin-top: 3px;">Нажми, чтобы узнать</div>
+                </div>
+
+                <div class="card-3d fact-mini-card" onclick="showFact('27 книг Нового Завета', '📚', 'Новый Завет включает 4 Евангелия, книгу Деяний Апостолов, 21 послание апостолов и книгу Откровения (Апокалипсис).')">
+                    <div class="fact-mini-icon">📚</div>
+                    <div style="font-weight: 900; font-size: 14px;">27 Книг</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #9C826B; margin-top: 3px;">Структура Завета</div>
+                </div>
+
+                <div class="card-3d fact-mini-card" onclick="showFact('Четыре Евангелиста', '🕊️', 'Матфей, Марк, Лука и Иоанн описали жизнь Иисуса с разных сторон, дополняя друг друга, словно четыре свидетеля чуда.')">
+                    <div class="fact-mini-icon">🕊️</div>
+                    <div style="font-weight: 900; font-size: 14px;">4 Евангелия</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #9C826B; margin-top: 3px;">Свидетели Света</div>
+                </div>
+
+                <div class="card-3d fact-mini-card" onclick="showFact('Что такое Притчи?', '🌾', 'Притчи — это короткие жизненные истории с глубоким духовным смыслом, через которые Иисус объяснял людям тайны Царствия Божия.')">
+                    <div class="fact-mini-icon">🌾</div>
+                    <div style="font-weight: 900; font-size: 14px;">Тайна притч</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #9C826B; margin-top: 3px;">Мудрость в образах</div>
+                </div>
+            </div>
+
+            <!-- Ангелочек -->
+            <div class="card-3d" style="background: #FFFBF2; display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                <div class="float-anim" style="font-size: 38px;">👼</div>
+                <div>
+                    <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #B57C0E;">Совет проводника</div>
+                    <div id="mascot-tip" style="font-size: 13px; font-weight: 700; color: #5C4033; margin-top: 2px;">
+                        Нажми на кружок уровня, чтобы начать урок и заработать звёзды!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дорожка уровней -->
+            <div id="levels-box" class="path-wrapper"></div>
+        </section>
+
+        <!-- ВКЛАДКА: БИБЛИЯ -->
+        <section id="sec-bible" class="hide">
+            <div class="card-3d" style="background: #F4EAD8; margin-bottom: 16px;">
+                <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 4px;">Чтение Писания</h2>
+                <p style="font-size: 12px; font-weight: 700; color: #8B6B4E; margin-bottom: 12px;">Синодальный перевод Нового Завета</p>
+                <div style="display: flex; gap: 10px;">
+                    <select id="sel-book" onchange="updateBibleText()" class="field-input" style="flex: 1; padding: 10px 12px; font-size: 14px;">
+                        <option value="matthew">Евангелие от Матфея</option>
+                        <option value="mark">Евангелие от Марка</option>
+                        <option value="luke">Евангелие от Луки</option>
+                        <option value="john">Евангелие от Иоанна</option>
+                    </select>
+                    <select id="sel-ch" onchange="updateBibleText()" class="field-input" style="width: 110px; padding: 10px 12px; font-size: 14px;">
+                        <option value="1">Глава 1</option>
+                        <option value="2">Глава 2</option>
+                        <option value="5">Глава 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card-3d">
+                <h3 id="bible-header" style="font-size: 17px; font-weight: 900; color: #8B5A2B; padding-bottom: 10px; border-bottom: 2px solid #F2E9D8; margin-bottom: 12px;"></h3>
+                <div id="bible-body" style="display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto;"></div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА: СТИХ ДНЯ -->
+        <section id="sec-verse" class="hide">
+            <div style="text-align: center; margin-bottom: 16px;">
+                <span style="background: #F4EAD8; color: #8B5A2B; font-size: 11px; font-weight: 900; padding: 5px 12px; border-radius: 20px; text-transform: uppercase;">Духовное зерно</span>
+                <h2 style="font-size: 24px; font-weight: 900; margin-top: 8px;">Стих на сегодня</h2>
+            </div>
+
+            <div class="card-3d" style="text-align: center; padding: 28px 20px; margin-bottom: 16px; background: #FFFDF9;">
+                <div style="font-size: 32px; margin-bottom: 10px;">✨</div>
+                <p id="v-text" style="font-size: 19px; font-weight: 800; line-height: 1.5; margin-bottom: 16px;">
+                    «Всё могу в укрепляющем меня Иисусе Христе.»
+                </p>
+                <div style="width: 50px; height: 4px; background: #D5C3A6; margin: 0 auto 12px; border-radius: 4px;"></div>
+                <div id="v-ref" style="font-size: 13px; font-weight: 900; color: #8B5A2B; text-transform: uppercase;">Послание к Филиппийцам 4:13</div>
+            </div>
+
+            <div class="card-3d" style="background: #FFFBF2; margin-bottom: 16px;">
+                <div style="font-size: 13px; font-weight: 900; color: #5C4033; margin-bottom: 4px;">💡 О чём этот стих?</div>
+                <p id="v-mean" style="font-size: 13px; font-weight: 700; color: #7A5C43; line-height: 1.45;">
+                    Апостол Павел напоминает нам, что истинная внутренняя сила приходит тогда, когда мы доверяем Богу в любых жизненных трудностях.
+                </p>
+            </div>
+
+            <button type="button" class="btn-beige" onclick="changeDailyVerse()">🔄 Другой вдохновляющий стих</button>
+        </section>
+
+        <!-- ВКЛАДКА: НАГРАДЫ -->
+        <section id="sec-awards" class="hide">
+            <div style="text-align: center; margin-bottom: 18px;">
+                <h2 style="font-size: 24px; font-weight: 900;">Зал Наград</h2>
+                <p style="font-size: 13px; font-weight: 700; color: #8B6B4E;">Твои духовные вехи и достижения</p>
+            </div>
+            <div id="awards-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;"></div>
+        </section>
+
+        <!-- ВКЛАДКА: ПРОФИЛЬ -->
+        <section id="sec-profile" class="hide">
+            <div class="card-3d" style="text-align: center; padding: 24px 18px; margin-bottom: 16px;">
+                <div id="prof-ava" style="width: 86px; height: 86px; border-radius: 50%; background: #8B5A2B; color: #fff; font-size: 36px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; border: 4px solid #F4EAD8;">
+                    И
+                </div>
+                <h2 id="prof-name" style="font-size: 22px; font-weight: 900;">Илона</h2>
+                <p id="prof-email" style="font-size: 13px; font-weight: 700; color: #8B6B4E; margin: 4px 0 10px;"></p>
+                <span id="prof-badge" style="display: inline-block; padding: 5px 14px; border-radius: 20px; background: #F4EAD8; color: #8B5A2B; font-size: 11px; font-weight: 900; text-transform: uppercase;">
+                    Ученик Света
+                </span>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 2px solid #F2E9D8;">
+                    <div style="background: #FDFBF7; padding: 10px; border-radius: 16px; border: 2px solid #EAE0CE;">
+                        <div id="p-stars" style="font-size: 18px; font-weight: 900; color: #EAB308;">0</div>
+                        <div style="font-size: 10px; font-weight: 800; color: #8B6B4E; text-transform: uppercase;">Звёзд</div>
+                    </div>
+                    <div style="background: #FDFBF7; padding: 10px; border-radius: 16px; border: 2px solid #EAE0CE;">
+                        <div id="p-lvl" style="font-size: 18px; font-weight: 900; color: #8B5A2B;">1</div>
+                        <div style="font-size: 10px; font-weight: 800; color: #8B6B4E; text-transform: uppercase;">Уровень</div>
+                    </div>
+                    <div style="background: #FDFBF7; padding: 10px; border-radius: 16px; border: 2px solid #EAE0CE;">
+                        <div id="p-streak" style="font-size: 18px; font-weight: 900; color: #F59E0B;">1</div>
+                        <div style="font-size: 10px; font-weight: 800; color: #8B6B4E; text-transform: uppercase;">Дней</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-beige" style="color: #B83333; border-color: #F0C2C2;" onclick="logoutUser()">
+                🚪 Выйти из аккаунта
+            </button>
+        </section>
+
+        <!-- ВКЛАДКА: АДМИН (Только для Илоны) -->
+        <section id="sec-admin" class="hide">
+            <div class="chapter-banner" style="background: linear-gradient(135deg, #8B5A2B, #5C3A1B);">
+                <div>
+                    <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #FCD34D;">👑 Режим Создателя</div>
+                    <div style="font-size: 20px; font-weight: 900; margin-top: 2px;">Управление аккаунтами</div>
+                </div>
+                <div id="adm-count" style="background: #F4EAD8; color: #8B5A2B; font-weight: 900; padding: 6px 14px; border-radius: 14px; font-size: 15px;">1</div>
+            </div>
+
+            <div id="adm-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </section>
+
+    </main>
+
+    <!-- ================= 4. МОДАЛЬНОЕ ОКНО ФАКТА ================= -->
+    <div id="fact-modal" class="modal-overlay hide">
+        <div class="card-3d" style="width: 100%; text-align: center; padding: 26px;">
+            <div id="f-ico" style="width: 72px; height: 72px; border-radius: 50%; background: #F4EAD8; border: 2px solid #D5C3A6; display: flex; align-items: center; justify-content: center; font-size: 34px; margin: 0 auto 14px;">📜</div>
+            <h3 id="f-title" style="font-size: 20px; font-weight: 900; margin-bottom: 10px;"></h3>
+            <p id="f-desc" style="font-size: 14px; font-weight: 700; color: #6E5039; line-height: 1.5; margin-bottom: 20px;"></p>
+            <button type="button" class="btn-brown" onclick="closeFact()">Понятно!</button>
+        </div>
+    </div>
+
+    <!-- ================= 5. ПОЛНОЭКРАННЫЙ 4-ШАГОВЫЙ УРОК ================= -->
+    <div id="lesson-screen" class="lesson-fullscreen hide">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <button type="button" onclick="closeLesson()" style="background: none; border: none; font-size: 24px; font-weight: 900; color: #A68A6D; cursor: pointer;">✕</button>
+            <div style="flex: 1; height: 14px; background: #EAE0CE; border-radius: 10px; overflow: hidden; padding: 2px;">
+                <div id="l-bar" style="height: 100%; width: 25%; background: #8B5A2B; border-radius: 8px; transition: width 0.3s;"></div>
+            </div>
+            <span id="l-step-txt" style="font-size: 12px; font-weight: 900; color: #8B5A2B;">1/4</span>
+        </div>
+
+        <!-- Шаг 1: Теория + 3D карточка -->
+        <div id="l-step-1" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px;">
+            <div class="card-3d" style="background: #FFF8EB; display: flex; gap: 12px; align-items: center;">
+                <div class="float-anim" style="font-size: 38px;">👼</div>
+                <div>
+                    <div id="l-badge" style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #B57C0E;">Урок 1</div>
+                    <p id="l-theory" style="font-size: 14px; font-weight: 800; line-height: 1.4; margin-top: 3px;"></p>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #8B6B4E;">👆 Нажми на карточку, чтобы перевернуть</div>
+                <div id="l-flip" class="flip-wrap" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <div style="font-size: 34px; margin-bottom: 8px;">🕊️</div>
+                            <div id="l-front" style="font-size: 18px; font-weight: 900;"></div>
+                            <div style="font-size: 11px; font-weight: 700; color: #A68A6D; margin-top: 10px;">Коснись для ответа</div>
+                        </div>
+                        <div class="flip-back">
+                            <div style="font-size: 30px; margin-bottom: 8px;">✨</div>
+                            <div id="l-back" style="font-size: 15px; font-weight: 800; color: #5C4033;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Шаг 2: Древнее слово -->
+        <div id="l-step-2" class="hide" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px;">
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: #F4EAD8; border: 2px solid #D5C3A6; display: flex; align-items: center; justify-content: center; font-size: 30px;">🏺</div>
+            <div>
+                <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #8B5A2B;">Древнее слово урока</div>
+                <h2 style="font-size: 24px; font-weight: 900;">Тайна оригинала</h2>
+            </div>
+            <div class="card-3d" style="width: 100%; padding: 26px;">
+                <div id="l-lang" style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #A68A6D;"></div>
+                <div id="l-word" style="font-size: 34px; font-weight: 900; color: #8B5A2B; margin: 8px 0 4px;"></div>
+                <div id="l-trans" style="font-size: 16px; font-weight: 800; color: #5C4033; margin-bottom: 14px;"></div>
+                <p id="l-word-desc" style="font-size: 14px; font-weight: 700; color: #6E5039; line-height: 1.45;"></p>
+            </div>
+        </div>
+
+        <!-- Шаг 3: Тест -->
+        <div id="l-step-3" class="hide" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px;">
+            <div>
+                <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #8B5A2B;">Проверка знаний</div>
+                <h3 id="l-q" style="font-size: 19px; font-weight: 900; margin-top: 4px;"></h3>
+            </div>
+            <div id="l-opts" style="display: flex; flex-direction: column; gap: 10px;"></div>
+            <div id="l-feed" class="hide" style="padding: 12px 14px; border-radius: 16px; font-size: 13px; font-weight: 800;"></div>
+        </div>
+
+        <!-- Шаг 4: Победа -->
+        <div id="l-step-4" class="hide" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px;">
+            <div class="float-anim" style="font-size: 68px;">🏆</div>
+            <h2 style="font-size: 28px; font-weight: 900;">Урок пройден!</h2>
+            <p style="font-size: 14px; font-weight: 700; color: #8B6B4E;">Ты делаешь прекрасные шаги в изучении Нового Завета.</p>
+            <div style="display: flex; gap: 12px; width: 100%;">
+                <div class="card-3d" style="flex: 1; background: #FFFBEB;">
+                    <div style="font-size: 11px; font-weight: 900; color: #B45309; text-transform: uppercase;">Награда</div>
+                    <div style="font-size: 22px; font-weight: 900; color: #EAB308; margin-top: 4px;">+15 ⭐</div>
+                </div>
+                <div class="card-3d" style="flex: 1; background: #F4EAD8;">
+                    <div style="font-size: 11px; font-weight: 900; color: #8B5A2B; text-transform: uppercase;">Статус</div>
+                    <div style="font-size: 16px; font-weight: 900; margin-top: 6px;">Открыт след.</div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="l-next-btn" class="btn-brown" onclick="nextLessonStep()">Продолжить</button>
+    </div>
+
+    <!-- ================= 6. НИЖНЕЕ МЕНЮ ================= -->
+    <nav id="bottom-nav" class="hide">
+        <button type="button" class="nav-btn active" onclick="openTab('map', this)">
+            <span class="nav-ico">🗺️</span><span>Путь</span>
+        </button>
+        <button type="button" class="nav-btn" onclick="openTab('bible', this)">
+            <span class="nav-ico">📖</span><span>Библия</span>
+        </button>
+        <button type="button" class="nav-btn" onclick="openTab('verse', this)">
+            <span class="nav-ico">☀️</span><span>Стих</span>
+        </button>
+        <button type="button" class="nav-btn" onclick="openTab('awards', this)">
+            <span class="nav-ico">🏅</span><span>Награды</span>
+        </button>
+        <button type="button" class="nav-btn" onclick="openTab('profile', this)">
+            <span class="nav-ico">👤</span><span>Профиль</span>
+        </button>
+        <button type="button" id="nav-admin" class="nav-btn hide" style="color: #D97706;" onclick="openTab('admin', this)">
+            <span class="nav-ico">👑</span><span>Админ</span>
+        </button>
+    </nav>
+
+</div>
+
+<script>
+    const memStore = {};
+    const store = {
+        get(k) { try { return localStorage.getItem(k); } catch(e) { return memStore[k] || null; } },
+        set(k, v) { try { localStorage.setItem(k, v); } catch(e) { memStore[k] = v; } },
+        del(k) { try { localStorage.removeItem(k); } catch(e) { delete memStore[k]; } }
+    };
+
+    const LESSONS = [
+        {
+            id: 1, icon: "⭐", title: "Рождество Христово",
+            theory: "Иисус Христос родился в городе Вифлееме. Первыми о Его рождении от ангелов узнали простые пастухи, а мудрецы с Востока пришли за путеводной звездой.",
+            front: "В каком городе родился Иисус Христос?",
+            back: "В Вифлееме Иудейском, как и предсказывали древние пророки.",
+            lang: "Древнегреческий оригинал", word: "Εὐαγγέλιον", trans: "(Эванге́лион — Евангелие)",
+            wordDesc: "Означает «Благая (радостная) весть» о том, что Спаситель пришёл в мир.",
+            q: "Кто привел восточных мудрецов (волхвов) к младенцу Иисусу?",
+            opts: ["Путеводная звезда на небе", "Римский правитель", "Свиток из храма"], ans: 0
+        },
+        {
+            id: 2, icon: "💧", title: "Крещение на Иордане",
+            theory: "В возрасте 30 лет Иисус пришел к реке Иордан, где пророк Иоанн Предтеча крестил людей. Во время крещения Дух Святой сошел с небес в виде голубя.",
+            front: "Кто крестил Иисуса в водах реки Иордан?",
+            back: "Пророк Иоанн Предтеча (Иоанн Креститель).",
+            lang: "Греческое слово", word: "Βάπτισμα", trans: "(Ба́птисма — Крещение)",
+            wordDesc: "Буквально переводится как «погружение в воду» — символ духовного очищения.",
+            q: "В каком образе Дух Святой сошел на Иисуса при Крещении?",
+            opts: ["В виде огненного столпа", "В виде белого голубя", "В виде яркой молнии"], ans: 1
+        },
+        {
+            id: 3, icon: "🐟", title: "Двенадцать Апостолов",
+            theory: "Иисус избрал 12 ближайших учеников, чтобы они шли за Ним, учились любви и несли Евангелие всем народам.",
+            front: "Кем по профессии были первые ученики Петр и Андрей?",
+            back: "Они были простыми галилейскими рыбаками.",
+            lang: "Древнегреческий титул", word: "Ἀπόστολος", trans: "(Апо́столос — Апостол)",
+            wordDesc: "Означает «Посланник» — человек, отправленный с особым важным поручением.",
+            q: "Сколько ближайших апостолов избрал Иисус Христос?",
+            opts: ["Семь", "Двенадцать", "Сорок"], ans: 1
+        },
+        {
+            id: 4, icon: "⛰️", title: "Нагорная Проповедь",
+            theory: "На склоне горы Иисус произнес Свою самую известную речь. Он дал Заповеди Блаженства и научил людей молитве «Отче наш».",
+            front: "Какую главную молитву подарил нам Иисус в Нагорной проповеди?",
+            back: "Молитву Господню — «Отче наш, сущий на небесах...»",
+            lang: "Библейское понятие", word: "Μακάριοι", trans: "(Мака́риои — Блаженны)",
+            wordDesc: "Означает высшую духовную радость человека, живущего с Богом.",
+            q: "С каких слов начинаются Заповеди в Нагорной проповеди?",
+            opts: ["«Блаженны...»", "«Бойтесь...»", "«Спешите...»"], ans: 0
+        },
+        {
+            id: 5, icon: "❤️", title: "Притчи о Милосердии",
+            theory: "В притче о Добром Самарянине Иисус показал, что наш ближний — это любой человек, который нуждается в нашей помощи.",
+            front: "Чему учит притча о Блудном сыне?",
+            back: "Безграничному прощению и любви Небесного Отца к каждому человеку.",
+            lang: "Греческое слово любви", word: "Ἀγάπη", trans: "(Ага́пэ — Любовь)",
+            wordDesc: "Жертвенная, бескорыстная любовь к Богу и ближнему.",
+            q: "Кто помог израненному путнику в известной притче Христа?",
+            opts: ["Милосердный Самарянин", "Богатый купец", "Стражник"], ans: 0
+        }
+    ];
+
+    const BIBLE = {
+        "matthew_1": {
+            t: "Евангелие от Матфея • Глава 1",
+            v: [
+                "1. Родословие Иисуса Христа, Сына Давидова, Сына Авраамова.",
+                "2. Авраам родил Исаака; Исаак родил Иакова; Иаков родил Иуду и братьев его...",
+                "16. Иаков родил Иосифа, мужа Марии, от Которой родился Иисус, называемый Христос.",
+                "18. Рождество Иисуса Христа было так: по обручении Матери Его Марии с Иосифом, прежде нежели сочетались они, оказалось, что Она имеет во чреве от Духа Святого.",
+                "21. Родит же Сына, и наречешь Ему имя Иисус, ибо Он спасет людей Своих от грехов их."
+            ]
+        },
+        "matthew_2": {
+            t: "Евангелие от Матфея • Глава 2",
+            v: [
+                "1. Когда же Иисус родился в Вифлееме Иудейском во дни царя Ирода, пришли в Иерусалим волхвы с востока и говорят:",
+                "2. Где родившийся Царь Иудейский? ибо мы видели звезду Его на востоке и пришли поклониться Ему.",
+                "10. Увидев же звезду, они возрадовались радостью весьма великою,",
+                "11. И, войдя в дом, увидели Младенца с Мариею, Матерью Его, и, пав, поклонились Ему; и принесли Ему дары: золото, ладан и смирну."
+            ]
+        },
+        "matthew_5": {
+            t: "Евангелие от Матфея • Глава 5",
+            v: [
+                "3. Блаженны нищие духом, ибо их есть Царство Небесное.",
+                "4. Блаженны плачущие, ибо они утешатся.",
+                "5. Блаженны кроткие, ибо они наследуют землю.",
+                "7. Блаженны милостивые, ибо они помилованы будут.",
+                "8. Блаженны чистые сердцем, ибо они Бога узрят.",
+                "14. Вы — свет мира. Не может укрыться город, стоящий на верху горы."
+            ]
+        },
+        "mark_1": {
+            t: "Евангелие от Марка • Глава 1",
+            v: [
+                "1. Начало Евангелия Иисуса Христа, Сына Божия.",
+                "9. И было в те дни, пришел Иисус из Назарета Галилейского и крестился от Иоанна в Иордане.",
+                "11. И глас был с небес: Ты Сын Мой Возлюбленный, в Котором Мое благоволение."
+            ]
+        },
+        "luke_1": {
+            t: "Евангелие от Луки • Глава 1",
+            v: [
+                "26. В шестой же месяц послан был Ангел Гавриил от Бога в город Галилейский, называемый Назарет,",
+                "28. Ангел, войдя к Ней, сказал: радуйся, Благодатная! Господь с Тобою.",
+                "31. И вот, зачнешь во чреве, и родишь Сына, и наречешь Ему имя: Иисус."
+            ]
+        },
+        "john_1": {
+            t: "Евангелие от Иоанна • Глава 1",
+            v: [
+                "1. В начале было Слово, и Слово было у Бога, и Слово было Бог.",
+                "4. В Нем была жизнь, и жизнь была свет человеков.",
+                "5. И свет во тьме светит, и тьма не объяла его."
+            ]
+        }
+    };
+
+    const VERSES = [
+        { t: "«Всё могу в укрепляющем меня Иисусе Христе.»", r: "Послание к Филиппийцам 4:13", m: "Истинная внутренняя сила приходит тогда, когда мы доверяем Богу в любых жизненных трудностях." },
+        { t: "«Бог есть любовь, и пребывающий в любви пребывает в Боге.»", r: "1-е послание Иоанна 4:16", m: "Доброта и искренняя забота о ближних помогают почувствовать присутствие Божие." },
+        { t: "«Просите, и дано будет вам; ищите, и найдете; стучите, и отворят вам.»", r: "Евангелие от Матфея 7:7", m: "Господь всегда слышит искреннюю молитву и открывает двери тем, кто стремится к свету." }
+    ];
+
+    let mode = 'login';
+    let user = null;
+    let curLesson = null;
+    let step = 1;
+    let answered = false;
+    let vIdx = 0;
+
+    function getDB() {
+        const def = [{ name: "Мария (Ученица)", email: "maria@example.com", level: 2, stars: 15, streak: 3 }];
+        try {
+            const raw = store.get('svet_db_v4');
+            if (!raw) { store.set('svet_db_v4', JSON.stringify(def)); return def; }
+            const p = JSON.parse(raw);
+            return Array.isArray(p) ? p : def;
+        } catch(e) { return def; }
+    }
+
+    function saveDB(list) { store.set('svet_db_v4', JSON.stringify(list)); }
+
+    function isIlona(u) {
+        if (!u) return false;
+        const e = (u.email || '').toLowerCase();
+        const n = (u.name || '').toLowerCase();
+        return e.includes('ilona') || n.includes('илона') || n.includes('ilona');
+    }
+
+    function setMode(m) {
+        mode = m;
+        document.getElementById('btn-mode-login').classList.toggle('active', m === 'login');
+        document.getElementById('btn-mode-reg').classList.toggle('active', m === 'register');
+        document.getElementById('wrap-name').classList.toggle('hide', m === 'login');
+        document.getElementById('btn-auth-submit').innerText = m === 'login' ? 'Войти в аккаунт' : 'Зарегистрироваться';
+        document.getElementById('auth-err').classList.add('hide');
+    }
+
+    function handleAuthSubmit() {
+        const emRaw = document.getElementById('inp-email').value.trim().toLowerCase();
+        const pass = document.getElementById('inp-pass').value.trim();
+        const nm = document.getElementById('inp-name').value.trim();
+        const err = document.getElementById('auth-err');
+
+        if (!emRaw) {
+            err.innerText = "Введите вашу почту или имя!";
+            err.classList.remove('hide');
+            return;
+        }
+        if (pass.length < 3) {
+            err.innerText = "Введите пароль (хотя бы 3 символа)!";
+            err.classList.remove('hide');
+            return;
+        }
+
+        const email = emRaw.includes('@') ? emRaw : (emRaw + '@svet.ru');
+        let db = getDB();
+        let found = db.find(x => (x.email || '').toLowerCase() === email);
+
+        if (found) {
+            if (nm) found.name = nm;
+            user = found;
+        } else {
+            const autoName = nm || (email.includes('ilona') ? 'Илона' : email.split('@')[0]);
+            user = { name: autoName, email: email, level: 1, stars: 0, streak: 1 };
+            db.push(user);
+            saveDB(db);
+        }
+
+        store.set('svet_active_v4', user.email);
+        launchApp();
+    }
+
+    function launchApp() {
+        document.getElementById('auth-screen').classList.add('hide');
+        document.getElementById('top-bar').classList.remove('hide');
+        document.getElementById('main-area').classList.remove('hide');
+        document.getElementById('bottom-nav').classList.remove('hide');
+
+        document.getElementById('nav-admin').classList.toggle('hide', !isIlona(user));
+        refreshUI();
+        updateBibleText();
+    }
+
+    function logoutUser() {
+        store.del('svet_active_v4');
+        user = null;
+        document.getElementById('inp-pass').value = '';
+        document.getElementById('auth-screen').classList.remove('hide');
+        document.getElementById('top-bar').classList.add('hide');
+        document.getElementById('main-area').classList.add('hide');
+        document.getElementById('bottom-nav').classList.add('hide');
+    }
+
+    function refreshUI() {
+        if (!user) return;
+        document.getElementById('top-stars').innerText = user.stars;
+        document.getElementById('top-streak').innerText = user.streak || 1;
+        document.getElementById('mascot-tip').innerText = `${user.name}, твой текущий открытый урок — №${user.level}. Нажми на него!`;
+
+        document.getElementById('prof-ava').innerText = (user.name || 'У').charAt(0).toUpperCase();
+        document.getElementById('prof-name').innerText = user.name;
+        document.getElementById('prof-email').innerText = user.email;
+        document.getElementById('p-stars').innerText = user.stars;
+        document.getElementById('p-lvl').innerText = user.level;
+        document.getElementById('p-streak').innerText = user.streak || 1;
+
+        const b = document.getElementById('prof-badge');
+        if (isIlona(user)) {
+            b.innerText = "👑 Создатель проекта";
+            b.style.background = "#FEF3C7";
+            b.style.color = "#B45309";
+        } else {
+            b.innerText = "Ученик Света";
+            b.style.background = "#F4EAD8";
+            b.style.color = "#8B5A2B";
+        }
+
+        const box = document.getElementById('levels-box');
+        box.innerHTML = '<div class="path-line"></div>';
+        const shifts = ["", "offset-left", "", "offset-right", ""];
+
+        LESSONS.forEach((l, i) => {
+            const done = l.id < user.level;
+            const cur = l.id === user.level;
+            const cls = done ? 'lvl-done' : (cur ? 'lvl-current' : 'lvl-locked');
+
+            const item = document.createElement('div');
+            item.className = `level-item ${shifts[i % shifts.length]}`;
+            item.innerHTML = `
+                ${cur ? '<div class="start-bubble">Старт</div>' : ''}
+                <button type="button" class="level-circle ${cls}" onclick="openLesson(${l.id})">${done ? '✓' : l.icon}</button>
+                <div class="lvl-label">${l.id}. ${l.title}</div>
+            `;
+            box.appendChild(item);
+        });
+
+        const awards = [
+            { i: "🕊️", t: "Первый шаг", d: "Начать путь", ok: user.level >= 1 },
+            { i: "⭐", t: "Искатель", d: "Пройти 1-й урок", ok: user.level >= 2 },
+            { i: "🏺", t: "Знаток слов", d: "Набрать 30 звёзд", ok: user.stars >= 30 },
+            { i: "👑", t: "Мудрец Завета", d: "Пройти все уроки", ok: user.level > 5 }
+        ];
+        document.getElementById('awards-grid').innerHTML = awards.map(a => `
+            <div class="card-3d" style="text-align:center; opacity:${a.ok ? '1' : '0.5'}">
+                <div style="font-size:34px; margin-bottom:6px;">${a.i}</div>
+                <div style="font-weight:900; font-size:14px;">${a.t}</div>
+                <div style="font-size:11px; font-weight:700; color:#8B6B4E; margin:3px 0 8px;">${a.d}</div>
+                <span style="font-size:10px; font-weight:900; padding:3px 8px; border-radius:10px; background:${a.ok ? '#DEF7EC' : '#EAE0CE'}; color:${a.ok ? '#03543F' : '#8B6B4E'};">
+                    ${a.ok ? 'Получено ✓' : 'Закрыто'}
+                </span>
+            </div>
+        `).join('');
+
+        if (isIlona(user)) renderAdmin();
+    }
+
+    function openLesson(id) {
+        if (id > user.level && !isIlona(user)) {
+            showFact("Уровень закрыт 🔒", "🕊️", "Сначала пройди предыдущий урок по порядку!");
+            return;
+        }
+        curLesson = LESSONS.find(x => x.id === id);
+        if (!curLesson) return;
+
+        step = 1;
+        answered = false;
+        document.getElementById('l-badge').innerText = `Урок ${curLesson.id} • ${curLesson.title}`;
+        document.getElementById('l-theory').innerText = curLesson.theory;
+        document.getElementById('l-front').innerText = curLesson.front;
+        document.getElementById('l-back').innerText = curLesson.back;
+        document.getElementById('l-flip').classList.remove('flipped');
+
+        document.getElementById('l-lang').innerText = curLesson.lang;
+        document.getElementById('l-word').innerText = curLesson.word;
+        document.getElementById('l-trans').innerText = curLesson.trans;
+        document.getElementById('l-word-desc').innerText = curLesson.wordDesc;
+
+        document.getElementById('l-q').innerText = curLesson.q;
+        const ob = document.getElementById('l-opts');
+        ob.innerHTML = '';
+        curLesson.opts.forEach((o, idx) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'btn-beige';
+            b.style.textAlign = 'left';
+            b.innerText = o;
+            b.onclick = () => pickOption(idx, b);
+            ob.appendChild(b);
+        });
+        document.getElementById('l-feed').classList.add('hide');
+
+        syncStepUI();
+        document.getElementById('lesson-screen').classList.remove('hide');
+    }
+
+    function pickOption(idx, btn) {
+        const f = document.getElementById('l-feed');
+        f.classList.remove('hide');
+        if (idx === curLesson.ans) {
+            answered = true;
+            btn.style.background = '#DEF7EC';
+            btn.style.borderColor = '#31C48D';
+            f.style.background = '#DEF7EC';
+            f.style.color = '#03543F';
+            f.innerText = '✨ Верно! Нажми «Продолжить».';
+        } else {
+            btn.style.background = '#FDE8E8';
+            btn.style.borderColor = '#F98080';
+            f.style.background = '#FDE8E8';
+            f.style.color = '#9B1C1C';
+            f.innerText = 'Попробуй ещё раз!';
+        }
+    }
+
+    function syncStepUI() {
+        [1,2,3,4].forEach(s => document.getElementById('l-step-' + s).classList.toggle('hide', s !== step));
+        document.getElementById('l-bar').style.width = (step * 25) + '%';
+        document.getElementById('l-step-txt').innerText = step + '/4';
+        document.getElementById('l-next-btn').innerText = step === 4 ? 'Забрать награду ⭐' : 'Продолжить';
+    }
+
+    function nextLessonStep() {
+        if (step === 3 && !answered) return;
+        if (step < 4) {
+            step++;
+            syncStepUI();
+        } else {
+            user.stars += 15;
+            if (curLesson.id === user.level && user.level <= LESSONS.length) user.level++;
+            let db = getDB();
+            const i = db.findIndex(x => (x.email || '').toLowerCase() === user.email.toLowerCase());
+            if (i !== -1) { db[i] = user; saveDB(db); }
+            closeLesson();
+            refreshUI();
+        }
+    }
+
+    function closeLesson() { document.getElementById('lesson-screen').classList.add('hide'); }
+
+    function updateBibleText() {
+        const b = document.getElementById('sel-book').value;
+        const c = document.getElementById('sel-ch').value;
+        const d = BIBLE[b + '_' + c] || BIBLE[b + '_1'];
+        document.getElementById('bible-header').innerText = d.t;
+        document.getElementById('bible-body').innerHTML = d.v.map(x => `
+            <div style="padding:12px; background:#FDFBF7; border:1px solid #EFE6D5; border-radius:14px; font-size:15px; font-weight:600; line-height:1.5;">${x}</div>
+        `).join('');
+    }
+
+    function changeDailyVerse() {
+        vIdx = (vIdx + 1) % VERSES.length;
+        const v = VERSES[vIdx];
+        document.getElementById('v-text').innerText = v.t;
+        document.getElementById('v-ref').innerText = v.r;
+        document.getElementById('v-mean').innerText = v.m;
+    }
+
+    function showFact(t, i, d) {
+        document.getElementById('f-title').innerText = t;
+        document.getElementById('f-ico').innerText = i;
+        document.getElementById('f-desc').innerText = d;
+        document.getElementById('fact-modal').classList.remove('hide');
+    }
+
+    function closeFact() { document.getElementById('fact-modal').classList.add('hide'); }
+
+    function renderAdmin() {
+        const db = getDB();
+        document.getElementById('adm-count').innerText = db.length;
+        document.getElementById('adm-list').innerHTML = db.map((u, idx) => `
+            <div class="card-3d" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="font-weight:900; font-size:15px;">${u.name} ${isIlona(u) ? '👑' : ''}</div>
+                    <div style="font-size:12px; font-weight:700; color:#8B6B4E;">${u.email}</div>
+                    <div style="font-size:12px; font-weight:800; margin-top:4px; color:#8B5A2B;">Уровень: ${u.level} • ⭐ ${u.stars}</div>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button type="button" onclick="admStar(${idx})" style="padding:8px 10px; border-radius:10px; border:1px solid #F59E0B; background:#FFF3DF; font-weight:900; cursor:pointer;">+⭐</button>
+                    <button type="button" onclick="admLvl(${idx})" style="padding:8px 10px; border-radius:10px; border:1px solid #D5C3A6; background:#F4EAD8; font-weight:900; cursor:pointer;">+Ур</button>
+                    ${!isIlona(u) ? `<button type="button" onclick="admDel(${idx})" style="padding:8px 10px; border-radius:10px; border:none; background:#FDE8E8; color:#B83333; font-weight:900; cursor:pointer;">🗑</button>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function admStar(i) {
+        let db = getDB(); db[i].stars += 15; saveDB(db);
+        if (db[i].email === user.email) user = db[i];
+        refreshUI();
+    }
+    function admLvl(i) {
+        let db = getDB(); db[i].level = Math.min(db[i].level + 1, 6); saveDB(db);
+        if (db[i].email === user.email) user = db[i];
+        refreshUI();
+    }
+    function admDel(i) {
+        let db = getDB(); db.splice(i, 1); saveDB(db);
+        refreshUI();
+    }
+
+    function openTab(name, btn) {
+        ['map','bible','verse','awards','profile','admin'].forEach(s => {
+            document.getElementById('sec-' + s).classList.toggle('hide', s !== name);
+        });
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+    }
+
+    (function init() {
+        const saved = store.get('svet_active_v4');
+        if (saved) {
+            const found = getDB().find(x => (x.email || '').toLowerCase() === saved.toLowerCase());
+            if (found) { user = found; launchApp(); }
+        }
+    })();
+</script>
+</body>
+</html>
