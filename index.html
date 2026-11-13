@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Новый Завет - Обучение</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Nunito (Duolingo style) -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Свет Веры — Новый Завет</title>
     <style>
+        /* Все стили вшиты внутрь файла — сайт работает мгновенно и без сбоев в Safari */
         * {
-            font-family: 'Nunito', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
         body {
             background-color: #E5DEC9;
-            margin: 0;
-            padding: 0;
+            color: #4A3222;
+            min-height: 100vh;
         }
-        .app-container {
+        .app-shell {
             max-width: 480px;
             margin: 0 auto;
             background-color: #FDFBF7;
@@ -29,112 +27,164 @@
             box-shadow: 0 0 35px rgba(92, 64, 51, 0.18);
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
         }
-        .btn-duo-brown {
+        .hide { display: none !important; }
+
+        /* Кнопки 3D в стиле Duolingo */
+        .btn-brown {
+            width: 100%;
             background-color: #8B5A2B;
             color: #FFFFFF;
+            border: none;
+            padding: 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             box-shadow: 0 5px 0 #5C3A1B;
-            transition: all 0.1s ease;
             cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
-        .btn-duo-brown:active {
+        .btn-brown:active {
             transform: translateY(5px);
             box-shadow: 0 0 0 #5C3A1B;
         }
-        .btn-duo-beige {
+        .btn-beige {
+            width: 100%;
             background-color: #EFE6D5;
             color: #5C4033;
             border: 2px solid #D5C3A6;
+            padding: 14px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            font-weight: 800;
             box-shadow: 0 4px 0 #D5C3A6;
-            transition: all 0.1s ease;
             cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
-        .btn-duo-beige:active {
+        .btn-beige:active {
             transform: translateY(4px);
             box-shadow: 0 0 0 #D5C3A6;
         }
+
+        /* Карточки */
         .card-3d {
-            background-color: #FFFFFF;
+            background: #FFFFFF;
             border: 2px solid #E6DEC8;
             box-shadow: 0 5px 0 #E6DEC8;
             border-radius: 24px;
+            padding: 18px;
         }
-        .node-active {
-            background: linear-gradient(145deg, #9C6735, #8B5A2B);
-            color: white;
-            box-shadow: 0 7px 0 #5C3A1B, 0 12px 20px rgba(139, 90, 43, 0.35);
-            border: 4px solid #FFF8EE;
-        }
-        .node-ActivePulse {
-            animation: pulse-ring 2s infinite;
-        }
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 7px 0 #5C3A1B, 0 0 0 0 rgba(139, 90, 43, 0.5); }
-            70% { box-shadow: 0 7px 0 #5C3A1B, 0 0 0 14px rgba(139, 90, 43, 0); }
-            100% { box-shadow: 0 7px 0 #5C3A1B, 0 0 0 0 rgba(139, 90, 43, 0); }
-        }
-        .node-completed {
-            background: linear-gradient(145deg, #F5B727, #E09F1F);
-            color: white;
-            box-shadow: 0 7px 0 #B57C0E;
-            border: 4px solid #FFFDF9;
-        }
-        .node-locked {
-            background-color: #E8E0CE;
-            color: #A69982;
-            box-shadow: 0 7px 0 #C9BDA6;
-            border: 4px solid #F7F3EB;
-        }
-        .perspective { perspective: 1000px; }
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 220px;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-        .flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 24px;
+
+        /* Экран Входа и Регистрации */
+        #auth-screen {
+            min-height: 100vh;
+            padding: 28px 24px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: #FDFBF7;
+        }
+        .logo-circle {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: #F4EAD8;
+            border: 4px solid #D5C3A6;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            font-size: 46px;
+            margin-bottom: 14px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
         }
-        .flip-card-front {
-            background-color: #FFFFFF;
-            border: 3px solid #D5C3A6;
-            box-shadow: 0 6px 0 #D5C3A6;
+        .logo-star {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background: #E09F1F;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 3px solid #FDFBF7;
         }
-        .flip-card-back {
-            background-color: #FFF8EB;
-            border: 3px solid #E09F1F;
-            box-shadow: 0 6px 0 #E09F1F;
-            transform: rotateY(180deg);
+        .mode-switch {
+            width: 100%;
+            background: #EFE6D5;
+            padding: 5px;
+            border-radius: 16px;
+            display: flex;
+            margin: 20px 0 18px;
+            border: 2px solid #E2D5BE;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .hide { display: none !important; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            font-weight: 800;
+            font-size: 14px;
+            color: #8B6B4E;
+            cursor: pointer;
         }
-        .mascot-float { animation: float 3s ease-in-out infinite; }
-    </style>
-</head>
-<body>
+        .mode-btn.active {
+            background: #FFFFFF;
+            color: #4A3222;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .field-group {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 12px;
+        }
+        .field-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #8B6B4E;
+            margin-left: 6px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .field-input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 2px solid #DFD2BC;
+            background: #FFFFFF;
+            font-size: 16px;
+            font-weight: 700;
+            color: #4A3222;
+            outline: none;
+        }
+        .field-input:focus {
+            border-color: #8B5A2B;
+        }
+        .error-banner {
+            width: 100%;
+            background: #FDE8E8;
+            border: 2px solid #F5B5B5;
+            color: #B83333;
+            padding: 12px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 8px;
+            text-align: left;
+        }
 
-<div class="app-container">
-
-    <!-- ================= ЭКРАН АВТОРИЗАЦИИ И РЕГИСТРАЦИИ ================= -->
-    <div id="auth-screen" class="min-h-screen w-full bg-[#FDFBF7] z-50 flex flex-col justify-between p-7">
-        <div class="flex-1 flex flex-col items-center justify-center text
+        /* Верхняя панель */
+        #top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 25;
