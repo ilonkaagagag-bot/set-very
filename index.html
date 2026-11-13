@@ -4,610 +4,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Свет Веры</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Nunito', 'sans-serif'], serif: ['Georgia', 'serif'] },
-                    colors: {
-                        appBg: '#FDFBF7',
-                        textMain: '#4A3B32',
-                        textMuted: '#8B7355',
-                        primary: '#B07D62',
-                        primaryDark: '#8B5E34',
-                        accent: '#E6CCB2',
-                        lockedBg: '#EAE0D5',
-                        lockedDark: '#D6C8B8', 
-                        success: '#84A98C',
-                        successDark: '#52796F',
-                        error: '#E5989B',
-                        errorDark: '#B56576',
-                        streak: '#F4A261',
-                        navBg: '#FFFFFF'
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body { font-family: 'Nunito', sans-serif; background-color: #EFEBE4; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        .app-wrapper { max-width: 480px; margin: 0 auto; background: #FDFBF7; height: 100vh; position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
-        @media (min-width: 640px) { .app-wrapper { height: 90vh; border-radius: 2rem; border: 6px solid white; margin-top: 5vh; } }
-        
-        .btn-3d { transition: transform 0.1s, border-width 0.1s, margin-top 0.1s; border-bottom-width: 4px; }
-        .btn-3d:active:not(:disabled) { transform: translateY(4px); border-bottom-width: 0px; margin-bottom: 4px; }
-        .btn-3d:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; border-bottom-width: 4px !important; margin-bottom: 0 !important; }
-        
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #E6DFD3; }
+        .app-wrapper { max-width: 480px; margin: 0 auto; background: #F5F1E7; min-height: 100vh; position: relative; overflow-x: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .btn-3d { box-shadow: 0 4px 0 #5C4033; transition: transform 0.1s, box-shadow 0.1s; }
+        .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 #5C4033; }
         .hide { display: none !important; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Змейка для пути */
-        .path-node:nth-child(5n+1) { margin-left: 0%; }
-        .path-node:nth-child(5n+2) { margin-left: 20%; }
-        .path-node:nth-child(5n+3) { margin-left: 40%; }
-        .path-node:nth-child(5n+4) { margin-left: 20%; }
-        .path-node:nth-child(5n+5) { margin-left: 0%; }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
-<div class="app-wrapper">
+<div class="app-wrapper flex flex-col">
 
-    <!-- HEADER (Виден всегда кроме уроков) -->
-    <header id="main-header" class="flex justify-between items-center px-5 py-4 bg-appBg/95 backdrop-blur-md z-20 shrink-0 hide">
-        <div class="font-black text-xl text-textMain">Свет Веры</div>
-        <div class="flex items-center space-x-4">
-            <div class="flex items-center space-x-1 text-streak font-bold text-lg">
-                <i class="fa-solid fa-star"></i><span id="ui-stars">0</span>
-            </div>
-            <div class="flex items-center space-x-1 text-error font-bold text-lg">
-                <i class="fa-solid fa-heart"></i><span id="ui-lives">5</span>
-            </div>
+    <!-- ЭКРАН АВТОРИЗАЦИИ / РЕГИСТРАЦИИ -->
+    <div id="auth-screen" class="absolute inset-0 bg-[#F5F1E7] z-50 flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-24 h-24 bg-[#D2B48C] rounded-full flex items-center justify-center mb-6 shadow-md border-2 border-[#5C4033]">
+            <i class="fas fa-dove text-5xl text-[#5C4033]"></i>
         </div>
-    </header>
+        <h1 class="text-3xl font-bold text-[#5C4033] mb-2">Свет Веры</h1>
+        <p class="text-[#8B5A2B] mb-6 font-medium">Войдите в свой аккаунт</p>
+        
+        <input type="email" id="email-input" class="w-full px-4 py-3 rounded-2xl border-2 border-[#D2B48C] text-lg focus:outline-none focus:border-[#8B5A2B] mb-3 text-[#5C4033] font-bold shadow-inner bg-white" placeholder="Email...">
+        <input type="password" id="pass-input" class="w-full px-4 py-3 rounded-2xl border-2 border-[#D2B48C] text-lg focus:outline-none focus:border-[#8B5A2B] mb-4 text-[#5C4033] font-bold shadow-inner bg-white" placeholder="Пароль (от 6 символов)...">
+        
+        <p id="auth-error" class="text-red-500 font-bold mb-4 text-sm hide"></p>
 
-    <!-- ЭКРАН ВХОДА -->
-    <div id="auth-screen" class="absolute inset-0 bg-appBg z-50 flex flex-col items-center justify-center p-6 text-center hide">
-        <div class="w-24 h-24 bg-accent rounded-full flex items-center justify-center mb-6 shadow-md text-primaryDark text-5xl">
-            <i class="fas fa-dove"></i>
-        </div>
-        <h1 class="text-4xl font-black text-textMain mb-2">Свет Веры</h1>
-        <p class="text-textMuted mb-8 font-bold">Как к вам обращаться?</p>
-        
-        <input type="text" id="username-input" class="w-full px-4 py-4 rounded-2xl border-2 border-lockedBg text-xl focus:outline-none focus:border-primary mb-2 text-center text-textMain font-bold bg-white" placeholder="Введите ваше имя...">
-        <p id="auth-error" class="text-error font-bold h-6 mb-4"></p>
-        
-        <button onclick="loginUser()" class="btn-3d w-full bg-primary border-primaryDark text-white py-4 rounded-2xl font-bold text-xl uppercase tracking-wide">Войти</button>
-        <p id="loading-text" class="text-textMuted font-bold mt-6 hide">Загрузка связи с небесами...</p>
+        <button onclick="handleAuth()" class="btn-3d w-full bg-[#8B5A2B] text-white py-4 rounded-2xl font-bold text-lg mb-3">Продолжить</button>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ (Вкладки) -->
-    <div id="main-content" class="flex-1 overflow-y-auto pb-24 relative no-scrollbar hide bg-appBg">
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div id="main-content" class="flex-1 overflow-y-auto pb-24 hide">
         
-        <!-- ВКЛАДКА: ГЛАВНАЯ (Карта) -->
-        <div id="tab-map" class="tab-pane flex flex-col items-center p-4">
-            <div class="w-full mb-6 text-center">
-                <h2 class="text-2xl font-black text-textMain">Основы веры</h2>
-                <p class="text-textMuted font-bold">Путь познания</p>
-                <div class="w-16 h-[3px] bg-lockedBg mx-auto mt-3 mb-4 rounded-full"></div>
-            </div>
-
-            <!-- ВОССТАНОВЛЕННЫЕ КАРТОЧКИ УЧЕНИЯ -->
-            <div class="w-full overflow-x-auto no-scrollbar mb-6 px-2 -mx-4">
-                <div class="flex space-x-4 w-max pb-2 px-4">
-                    <div class="bg-white border-2 border-lockedBg rounded-2xl p-4 w-40 shadow-sm flex flex-col items-center text-center btn-3d cursor-pointer" onclick="showFact('jesus')">
-                        <div class="text-4xl mb-2">🌟</div>
-                        <h3 class="font-bold text-textMain text-sm mb-1 leading-tight">Кто такой Иисус?</h3>
-                        <p class="text-[10px] text-primary font-bold uppercase mt-auto pt-2">Читать</p>
+        <!-- ВКЛАДКА: ПУТЬ -->
+        <div id="tab-map" class="p-0">
+            <!-- Карточки -->
+            <div class="pt-6 pl-6 pb-2">
+                <h3 class="text-lg font-bold text-[#5C4033] mb-3">Интересное сегодня</h3>
+                <div class="flex gap-4 overflow-x-auto horizontal-scroll pb-4 pr-6">
+                    <div onclick="alert('Арамейский язык был разговорным языком Иисуса в повседневной жизни.')" class="min-w-[140px] bg-white p-4 rounded-2xl border-2 border-[#D2B48C] shadow-sm flex flex-col items-center text-center cursor-pointer">
+                        <span class="text-3xl mb-2">📜</span>
+                        <span class="font-bold text-[#5C4033] text-sm">Язык Христа</span>
                     </div>
-                    <div class="bg-white border-2 border-lockedBg rounded-2xl p-4 w-40 shadow-sm flex flex-col items-center text-center btn-3d cursor-pointer" onclick="showFact('gospel')">
-                        <div class="text-4xl mb-2">📖</div>
-                        <h3 class="font-bold text-textMain text-sm mb-1 leading-tight">Что такое Евангелие?</h3>
-                        <p class="text-[10px] text-primary font-bold uppercase mt-auto pt-2">Читать</p>
-                    </div>
-                    <div class="bg-white border-2 border-lockedBg rounded-2xl p-4 w-40 shadow-sm flex flex-col items-center text-center btn-3d cursor-pointer" onclick="showFact('covenant')">
-                        <div class="text-4xl mb-2">🤝</div>
-                        <h3 class="font-bold text-textMain text-sm mb-1 leading-tight">Новый Завет</h3>
-                        <p class="text-[10px] text-primary font-bold uppercase mt-auto pt-2">Читать</p>
+                    <div onclick="alert('Новый Завет состоит из 27 книг, написанных в 1 веке нашей эры.')" class="min-w-[140px] bg-white p-4 rounded-2xl border-2 border-[#D2B48C] shadow-sm flex flex-col items-center text-center cursor-pointer">
+                        <span class="text-3xl mb-2">📚</span>
+                        <span class="font-bold text-[#5C4033] text-sm">Структура</span>
                     </div>
                 </div>
             </div>
 
-            <div id="levels-map" class="w-full flex flex-col items-center pb-8 mt-2"></div>
+            <h2 class="text-2xl font-bold text-[#5C4033] mb-8 text-center mt-4">Путь познания</h2>
+            <div class="flex flex-col items-center gap-8 relative mt-4 pb-12">
+                <div class="absolute w-3 bg-[#D2B48C] h-full z-0 rounded-full left-1/2 -translate-x-1/2 opacity-50"></div>
+                <div onclick="openLesson(1)" class="z-10 relative bg-[#8B5A2B] text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold btn-3d border-4 border-[#F5F1E7] ml-[-100px] cursor-pointer">1</div>
+                <div class="z-10 relative bg-[#D2B48C] text-[#5C4033] w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold btn-3d border-4 border-[#F5F1E7] mr-[-100px] cursor-pointer opacity-70">2</div>
+                <div class="z-10 relative bg-[#D2B48C] text-[#5C4033] w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold btn-3d border-4 border-[#F5F1E7] ml-[-100px] cursor-pointer opacity-70">3</div>
+            </div>
         </div>
 
         <!-- ВКЛАДКА: БИБЛИЯ -->
-        <div id="tab-bible" class="tab-pane hide p-5 flex flex-col h-full">
-            <h2 class="text-2xl font-black text-textMain mb-4 text-center">Новый Завет</h2>
-            <div class="flex space-x-2 mb-4 shrink-0">
-                <select id="bible-book" onchange="loadBibleText()" class="flex-1 bg-white border-2 border-lockedBg text-textMain font-bold rounded-xl px-3 py-3 focus:outline-none">
-                    <option value="matthew">От Матфея</option>
-                    <option value="mark">От Марка</option>
-                    <option value="luke">От Луки</option>
-                    <option value="john">От Иоанна</option>
-                </select>
-                <select id="bible-chapter" onchange="loadBibleText()" class="w-24 bg-white border-2 border-lockedBg text-textMain font-bold rounded-xl px-3 py-3 focus:outline-none">
-                    <option value="1">Гл 1</option>
-                    <option value="2">Гл 2</option>
-                    <option value="3">Гл 3</option>
-                </select>
-            </div>
-            <div class="flex-1 bg-white border-2 border-lockedBg rounded-2xl p-5 overflow-y-auto text-lg leading-relaxed text-textMain font-serif shadow-sm">
-                <div id="bible-text-container">
-                    <!-- Текст Библии -->
-                </div>
+        <div id="tab-bible" class="p-6 hide">
+            <h2 class="text-2xl font-bold text-[#5C4033] text-center mb-6">Библия</h2>
+            <div class="bg-white p-6 rounded-2xl border-2 border-[#D2B48C] shadow-sm">
+                <p class="text-[#5C4033] leading-relaxed mb-4"><b>1.</b> Родословие Иисуса Христа, Сына Давидова, Сына Авраамова.</p>
+                <p class="text-[#5C4033] leading-relaxed"><b>2.</b> Авраам родил Исаака; Исаак родил Иакова; Иаков родил Иуду и братьев его;</p>
             </div>
         </div>
 
         <!-- ВКЛАДКА: СТИХ ДНЯ -->
-        <div id="tab-verse" class="tab-pane hide p-5">
-            <h2 class="text-2xl font-black text-textMain mb-6 text-center">Слово на сегодня</h2>
-            <div class="bg-gradient-to-br from-primary to-primaryDark p-8 rounded-3xl shadow-lg text-white relative overflow-hidden">
-                <i class="fa-solid fa-quote-right absolute top-4 right-4 text-6xl opacity-10"></i>
-                <p class="text-xl font-serif leading-relaxed mb-6 relative z-10 italic">"Просите, и дано будет вам; ищите, и найдете; стучите, и отворят вам..."</p>
-                <p class="text-right font-bold text-accent">От Матфея 7:7</p>
+        <div id="tab-verse" class="p-6 hide">
+            <h2 class="text-2xl font-bold text-[#5C4033] text-center mb-6">Стих Дня</h2>
+            <div class="bg-white p-8 rounded-3xl border-2 border-[#D2B48C] text-center shadow-sm">
+                <p class="italic text-lg text-[#5C4033] mb-4">«Все могу в укрепляющем меня Иисусе Христе.»</p>
+                <p class="font-bold text-[#8B5A2B] text-sm">Филиппийцам 4:13</p>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: НАГРАДЫ -->
+        <div id="tab-achievements" class="p-6 hide">
+            <h2 class="text-2xl font-bold text-[#5C4033] text-center mb-6">Достижения</h2>
+            <div class="bg-white p-6 rounded-3xl border-2 border-[#D2B48C] text-center shadow-sm">
+                <div class="text-6xl mb-4">👼</div>
+                <p class="font-bold text-[#5C4033] text-lg">Первые шаги</p>
+                <p class="text-sm text-[#8B5A2B]">Начало вашего духовного пути</p>
             </div>
         </div>
 
         <!-- ВКЛАДКА: ПРОФИЛЬ -->
-        <div id="tab-profile" class="tab-pane hide p-5">
-            <h2 class="text-2xl font-black text-textMain mb-6 text-center">Личный кабинет</h2>
-            <div class="bg-white p-6 rounded-3xl border-2 border-lockedBg shadow-sm mb-6 text-center">
-                <div id="profile-avatar" class="w-20 h-20 bg-accent rounded-full flex items-center justify-center text-4xl text-primary font-black border-4 border-white shadow-sm mx-auto mb-3">?</div>
-                <h3 id="profile-name" class="font-black text-2xl text-textMain">Имя</h3>
-                <p class="text-sm text-textMuted font-bold mb-6">Ученик Света</p>
-                
-                <div class="flex justify-around bg-appBg rounded-2xl p-4">
-                    <div class="text-center">
-                        <div id="profile-stars" class="text-2xl font-black text-streak mb-1"><i class="fa-solid fa-star text-sm mr-1"></i>0</div>
-                        <div class="text-[10px] uppercase font-bold text-textMuted">Звезд</div>
-                    </div>
-                    <div class="w-px bg-lockedBg"></div>
-                    <div class="text-center">
-                        <div id="profile-level" class="text-2xl font-black text-primary mb-1">1</div>
-                        <div class="text-[10px] uppercase font-bold text-textMuted">Уровень</div>
-                    </div>
-                </div>
-            </div>
-            <button onclick="logoutUser()" class="btn-3d w-full bg-error border-errorDark text-white py-4 rounded-2xl font-bold uppercase tracking-wide">Сменить профиль</button>
-        </div>
-
-        <!-- ВКЛАДКА: АДМИН (Только для Илоны) -->
-        <div id="tab-admin" class="tab-pane hide p-5">
-            <h2 class="text-2xl font-black text-textMain mb-2">Управление</h2>
-            <p class="text-textMuted font-bold mb-6 text-sm">Список всех пользователей</p>
-            
-            <div class="bg-white border-2 border-lockedBg rounded-2xl overflow-hidden shadow-sm">
-                <div class="flex bg-appBg border-b-2 border-lockedBg p-3 font-bold text-xs text-textMuted uppercase">
-                    <div class="flex-1">Имя</div>
-                    <div class="w-12 text-center">Ур.</div>
-                    <div class="w-12 text-center"><i class="fa-solid fa-star"></i></div>
-                    <div class="w-10"></div>
-                </div>
-                <div id="admin-users-list" class="flex flex-col divide-y-2 divide-lockedBg">
-                    <div class="p-4 text-center text-textMuted font-bold text-sm">Загрузка...</div>
-                </div>
+        <div id="tab-profile" class="p-6 hide">
+            <h2 class="text-2xl font-bold text-[#5C4033] mb-6 text-center">Личный кабинет</h2>
+            <div class="bg-white p-8 rounded-3xl shadow-sm text-center border-2 border-[#D2B48C]">
+                <div class="w-24 h-24 bg-[#8B5A2B] text-white rounded-full flex items-center justify-center text-4xl font-bold mx-auto mb-4 shadow-md uppercase">@</div>
+                <h3 id="profile-email-text" class="text-xl font-bold text-[#5C4033] mb-1"></h3>
+                <p class="text-[#8B5A2B] font-medium mb-8">Ученик Света</p>
+                <button onclick="logoutUser()" class="btn-3d w-full bg-[#E5B5B5] text-[#5C4033] py-3 rounded-2xl font-bold text-md">Выйти из аккаунта</button>
             </div>
         </div>
-
-    </div>
-
-    <!-- УПРОЩЕННЫЙ УРОК (Сразу вопрос для скорости) -->
-    <div id="lesson-overlay" class="fixed inset-0 z-[100] bg-appBg hide flex-col">
-        <div class="w-full px-5 py-4 flex items-center space-x-4 bg-appBg shrink-0">
-            <button onclick="closeLesson()" class="text-lockedDark hover:text-textMain text-xl"><i class="fa-solid fa-xmark"></i></button>
-            <div class="flex-1 h-3 bg-lockedBg rounded-full overflow-hidden"><div class="h-full bg-success w-1/2"></div></div>
-        </div>
-
-        <div class="flex-1 overflow-y-auto p-6 flex flex-col justify-center">
-            <div class="w-20 h-20 bg-accent rounded-full flex items-center justify-center text-4xl shadow-sm mx-auto mb-6">😇</div>
-            <h2 id="quiz-question" class="text-2xl font-black text-center mb-8 text-textMain">Вопрос?</h2>
-            <div id="quiz-options" class="flex flex-col space-y-4"></div>
-        </div>
-
-        <div id="quiz-feedback" class="absolute bottom-0 w-full p-6 rounded-t-3xl z-50 transition-transform transform translate-y-full flex flex-col bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
-            <div class="flex items-center mb-4">
-                <div id="feedback-icon" class="w-10 h-10 rounded-full flex items-center justify-center text-white text-xl font-bold mr-3 bg-success"><i class="fa-solid fa-check"></i></div>
-                <h3 id="feedback-text" class="text-xl font-black text-successDark">Правильно!</h3>
+        
+        <!-- ВКЛАДКА: АДМИН ПАНЕЛЬ (Только для Илоны) -->
+        <div id="tab-admin" class="p-6 hide">
+            <h2 class="text-2xl font-bold text-[#5C4033] mb-6 text-center"><i class="fas fa-crown text-yellow-500 mr-2"></i>Панель Создателя</h2>
+            <div class="bg-white p-4 rounded-3xl shadow-sm border-2 border-[#D2B48C]">
+                <h3 class="font-bold text-[#8B5A2B] mb-4">Все зарегистрированные ученики:</h3>
+                <ul id="admin-list" class="divide-y divide-[#F5F1E7]"></ul>
             </div>
-            <button id="feedback-btn" onclick="finishLessonStep()" class="btn-3d w-full bg-success border-successDark text-white font-bold py-4 rounded-2xl text-lg uppercase tracking-wide">Далее</button>
         </div>
     </div>
 
-    <!-- ОКНО ДЛЯ КАРТОЧЕК УЧЕНИЯ -->
-    <div id="fact-modal" class="fixed inset-0 z-[110] bg-appBg hide flex-col">
-        <div class="w-full px-5 py-4 flex items-center space-x-4 bg-appBg border-b-2 border-lockedBg shrink-0">
-            <button onclick="closeFact()" class="text-lockedDark hover:text-textMain text-2xl"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-xl font-black text-textMain flex-1 text-center pr-8">Учение</h2>
+    <!-- МОДАЛЬНОЕ ОКНО УРОКА -->
+    <div id="lesson-modal" class="absolute inset-0 bg-[#F5F1E7] z-[100] flex flex-col hide">
+        <div class="flex-1 p-6 flex flex-col justify-center items-center text-center">
+            <h2 class="text-3xl font-bold text-[#5C4033] mb-4">Урок 1</h2>
+            <div class="bg-white p-8 rounded-3xl border-2 border-[#D2B48C] shadow-sm w-full">
+                <p class="text-[#5C4033] text-lg">Вы успешно начали изучение основ!</p>
+            </div>
         </div>
-        <div class="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center text-center">
-            <div id="fact-icon" class="text-7xl mb-6 drop-shadow-md"></div>
-            <h2 id="fact-title" class="text-2xl font-black mb-6 text-textMain"></h2>
-            <p id="fact-text" class="text-lg text-textMain font-medium bg-white p-6 rounded-3xl border-2 border-lockedBg shadow-sm leading-relaxed"></p>
-        </div>
-        <div class="p-6 shrink-0 pb-safe">
-            <button onclick="closeFact()" class="btn-3d w-full bg-primary border-primaryDark text-white font-bold py-4 rounded-2xl text-lg uppercase tracking-wide">Понятно</button>
+        <div class="p-6">
+            <button onclick="closeLesson()" class="btn-3d w-full bg-[#8B5A2B] text-white py-4 rounded-2xl font-bold text-xl uppercase">Завершить</button>
         </div>
     </div>
 
     <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
-    <nav id="bottom-nav" class="bg-navBg border-t-2 border-lockedBg flex justify-around items-center absolute bottom-0 w-full z-20 pb-safe pt-2 px-2 h-16 shrink-0 hide">
-        <button onclick="switchTab('map', this)" class="nav-btn text-primary flex flex-col items-center flex-1">
-            <i class="fa-solid fa-map text-xl mb-1"></i><span class="text-[10px] font-bold uppercase">Путь</span>
-        </button>
-        <button onclick="switchTab('bible', this)" class="nav-btn text-lockedDark flex flex-col items-center flex-1">
-            <i class="fa-solid fa-book-bible text-xl mb-1"></i><span class="text-[10px] font-bold uppercase">Библия</span>
-        </button>
-        <button onclick="switchTab('verse', this)" class="nav-btn text-lockedDark flex flex-col items-center flex-1">
-            <i class="fa-solid fa-sun text-xl mb-1"></i><span class="text-[10px] font-bold uppercase">Стих</span>
-        </button>
-        <button onclick="switchTab('profile', this)" class="nav-btn text-lockedDark flex flex-col items-center flex-1">
-            <i class="fa-solid fa-user text-xl mb-1"></i><span class="text-[10px] font-bold uppercase">Профиль</span>
-        </button>
-        <!-- Кнопка админа (скрыта по умолчанию) -->
-        <button id="nav-admin" onclick="switchTab('admin', this)" class="nav-btn text-lockedDark hide flex-col items-center flex-1">
-            <i class="fa-solid fa-crown text-xl mb-1"></i><span class="text-[10px] font-bold uppercase">Админ</span>
-        </button>
-    </nav>
-
+    <div id="bottom-nav" class="bg-white border-t-2 border-[#D2B48C] flex justify-around p-2 pb-6 absolute bottom-0 w-full hide z-40">
+        <button onclick="switchTab('map')" class="nav-btn text-[#8B5A2B] flex flex-col items-center w-16 pt-2"><i class="fas fa-map-marked-alt text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Путь</span></button>
+        <button onclick="switchTab('bible')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-book-bible text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Библия</span></button>
+        <button onclick="switchTab('verse')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-sun text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Стих</span></button>
+        <button onclick="switchTab('achievements')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-medal text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Награды</span></button>
+        <button onclick="switchTab('profile')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2"><i class="fas fa-user text-2xl"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Профиль</span></button>
+        <button id="admin-btn" onclick="switchTab('admin')" class="nav-btn text-[#D2B48C] flex flex-col items-center w-16 pt-2 hide"><i class="fas fa-crown text-2xl text-yellow-500"></i><span class="text-[10px] mt-1.5 font-bold uppercase">Админ</span></button>
+    </div>
 </div>
 
-<!-- ФАЙЛБЕЙЗ И ЛОГИКА (ТИП MODULE) -->
-<script type="module">
-    // ИМПОРТЫ FIREBASE
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-    let auth, db, appId, currentUser, userDocRef;
-    window.gameState = { name: '', level: 1, stars: 0, lives: 5 };
-    
-    // БАЗА ТЕКСТА БИБЛИИ (Пример Матфей 1)
-    const bibleData = {
-        'matthew': {
-            '1': [
-                "Родословие Иисуса Христа, Сына Давидова, Сына Авраамова.",
-                "Авраам родил Исаака; Исаак родил Иакова; Иаков родил Иуду и братьев его;",
-                "Иуда родил Фареса и Зару от Фамари; Фарес родил Есрома; Есром родил Арама;",
-                "Арам родил Аминадава; Аминадав родил Наассона; Наассон родил Салмона;",
-                "Салмон родил Вооза от Рахавы; Вооз родил Овида от Руфи; Овид родил Иессея;",
-                "Иессей родил Давида царя; Давид царь родил Соломона от бывшей за Уриею;",
-                "Соломон родил Ровоама; Ровоам родил Авию; Авия родил Асу;",
-                "Аса родил Иосафата; Иосафат родил Иорама; Иорам родил Озию;",
-                "Озия родил Иоафама; Иоафам родил Ахаза; Ахаз родил Езекию;",
-                "Езекия родил Манассию; Манассия родил Амона; Амон родил Иосию;",
-                "Иосия родил Иоакима; Иоаким родил Иехонию и братьев его, перед переселением в Вавилон.",
-                "По переселении же в Вавилон, Иехония родил Салафииля; Салафииль родил Зоровавеля;",
-                "Зоровавель родил Авиуда; Авиуд родил Елиакима; Елиаким родил Азора;",
-                "Азор родил Садока; Садок родил Ахима; Ахим родил Елиуда;",
-                "Елиуд родил Елеазара; Елеазар родил Матфана; Матфан родил Иакова;",
-                "Иаков родил Иосифа, мужа Марии, от Которой родился Иисус, называемый Христос.",
-                "Итак всех родов от Авраама до Давида четырнадцать родов; и от Давида до переселения в Вавилон четырнадцать родов; и от переселения в Вавилон до Христа четырнадцать родов."
-            ]
-        }
-    };
-
-    // БАЗА УРОВНЕЙ
-    const levelsData = [
-        { id: 1, q: "Как переводится слово 'Евангелие'?", options: ["Добрая книга", "Благая весть", "Закон"], correct: 1 },
-        { id: 2, q: "В каком городе родился Иисус?", options: ["Иерусалим", "Назарет", "Вифлеем"], correct: 2 },
-        { id: 3, q: "Кем был Матфей до того, как стал апостолом?", options: ["Рыбаком", "Сборщиком налогов", "Врачом"], correct: 1 },
-        { id: 4, q: "Сколько дней Иисус постился в пустыне?", options: ["40 дней", "7 дней", "30 дней"], correct: 0 },
-        { id: 5, q: "Где Иисус принял крещение?", options: ["В Красном море", "В реке Иордан", "В колодце Иакова"], correct: 1 }
-    ];
-
-    // ДАННЫЕ ДЛЯ КАРТОЧЕК УЧЕНИЯ
-    const factsData = {
-        jesus: { icon: '🌟', title: 'Кто такой Иисус?', text: 'В христианстве Иисус Христос считается Сыном Божьим и Спасителем (Мессией), предсказанным в Ветхом Завете. Его имя на арамейском звучит как "Иешуа", что значит "Господь спасает".' },
-        gospel: { icon: '📖', title: 'Что такое Евангелие?', text: 'Слово «Евангелие» переводится с древнегреческого как «Благая весть». Это главные книги Нового Завета, описывающие земную жизнь, учение, чудеса, крестную смерть и воскресение Иисуса Христа.' },
-        covenant: { icon: '🤝', title: 'Новый Завет', text: 'Новый Завет — это вторая часть Библии, состоящая из 27 книг (Евангелия, Деяния, Послания апостолов и Откровение). Он описывает новый союз (договор) между Богом и человечеством.' }
-    };
-
-    // ЛОГИКА КАРТОЧЕК УЧЕНИЯ
-    window.showFact = function(id) {
-        document.getElementById('fact-icon').innerText = factsData[id].icon;
-        document.getElementById('fact-title').innerText = factsData[id].title;
-        document.getElementById('fact-text').innerText = factsData[id].text;
-        document.getElementById('fact-modal').classList.remove('hide');
-        document.getElementById('fact-modal').classList.add('flex');
-    }
-    
-    window.closeFact = function() {
-        document.getElementById('fact-modal').classList.add('hide');
-        document.getElementById('fact-modal').classList.remove('flex');
-    }
-
-    // ИНИЦИАЛИЗАЦИЯ
-    async function init() {
-        document.getElementById('auth-screen').classList.remove('hide');
-        document.getElementById('loading-text').classList.remove('hide');
-
-        try {
-            appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const config = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-            const app = initializeApp(config);
-            auth = getAuth(app);
-            db = getFirestore(app);
-
-            const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-            if (token) await signInWithCustomToken(auth, token);
-            else await signInAnonymously(auth);
+<script>
+    function checkAuth() {
+        const user = localStorage.getItem('svet_current_user');
+        if (user) {
+            document.getElementById('auth-screen').classList.add('hide');
+            document.getElementById('main-content').classList.remove('hide');
+            document.getElementById('bottom-nav').classList.remove('hide');
             
-            currentUser = auth.currentUser;
-            userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser.uid);
-            
-            const snap = await getDoc(userDocRef);
-            if (snap.exists()) {
-                window.gameState = snap.data();
-                if(!window.gameState.lives) window.gameState.lives = 5;
-                if(!window.gameState.stars) window.gameState.stars = 0;
-                finishLogin();
+            document.getElementById('profile-email-text').innerText = user;
+
+            // Если в почте есть ilona — открываем админку
+            if (user.toLowerCase().includes('ilona')) {
+                document.getElementById('admin-btn').classList.remove('hide');
+                loadAdminPanel();
             } else {
-                document.getElementById('loading-text').classList.add('hide');
+                document.getElementById('admin-btn').classList.add('hide');
             }
-        } catch (e) {
-            console.error(e);
-            document.getElementById('auth-error').innerText = "Ошибка соединения с сервером.";
+        } else {
+            document.getElementById('auth-screen').classList.remove('hide');
+            document.getElementById('main-content').classList.add('hide');
+            document.getElementById('bottom-nav').classList.add('hide');
         }
     }
 
-    // ЛОГИН
-    window.loginUser = async function() {
-        const name = document.getElementById('username-input').value.trim();
-        if (name.length === 0) {
-            document.getElementById('auth-error').innerText = "Напишите своё имя!";
+    function handleAuth() {
+        const email = document.getElementById('email-input').value.trim();
+        const pass = document.getElementById('pass-input').value;
+        const err = document.getElementById('auth-error');
+
+        if (!email.includes('@')) {
+            err.innerText = "Введите корректный Email";
+            err.classList.remove('hide');
             return;
         }
-        document.getElementById('auth-error').innerText = "Создаем профиль...";
-        
-        window.gameState = { name: name, level: 1, stars: 0, lives: 5, date: new Date().toISOString() };
-        await setDoc(userDocRef, window.gameState);
-        finishLogin();
-    }
-
-    // ВЫХОД
-    window.logoutUser = async function() {
-        await deleteDoc(userDocRef); // Для сброса удаляем документ
-        window.location.reload();
-    }
-
-    function finishLogin() {
-        document.getElementById('auth-screen').classList.add('hide');
-        document.getElementById('main-header').classList.remove('hide');
-        document.getElementById('main-content').classList.remove('hide');
-        document.getElementById('bottom-nav').classList.remove('hide');
-        document.getElementById('bottom-nav').classList.add('flex');
-        
-        // Админка
-        if (window.gameState.name && window.gameState.name.toLowerCase() === 'илона') {
-            document.getElementById('nav-admin').classList.remove('hide');
-            document.getElementById('nav-admin').classList.add('flex');
+        if (pass.length < 6) {
+            err.innerText = "Пароль должен быть от 6 символов";
+            err.classList.remove('hide');
+            return;
         }
-        
-        updateUI();
-        window.switchTab('map');
+
+        err.classList.add('hide');
+        localStorage.setItem('svet_current_user', email);
+
+        let db = JSON.parse(localStorage.getItem('svet_users_db') || '[]');
+        if (!db.includes(email)) {
+            db.push(email);
+            localStorage.setItem('svet_users_db', JSON.stringify(db));
+        }
+
+        checkAuth();
+        switchTab('map');
     }
 
-    // ВКЛАДКИ
-    window.switchTab = function(tabId, btnElement = null) {
-        document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hide'));
+    function logoutUser() {
+        localStorage.removeItem('svet_current_user');
+        document.getElementById('email-input').value = '';
+        document.getElementById('pass-input').value = '';
+        checkAuth();
+    }
+
+    function switchTab(tabId) {
+        ['map', 'bible', 'verse', 'achievements', 'profile', 'admin'].forEach(id => {
+            const el = document.getElementById('tab-' + id);
+            if(el) el.classList.add('hide');
+        });
         document.getElementById('tab-' + tabId).classList.remove('hide');
         
-        if(btnElement) {
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-primary'); btn.classList.add('text-lockedDark');
-            });
-            btnElement.classList.remove('text-lockedDark'); btnElement.classList.add('text-primary');
-        }
-
-        if(tabId === 'map') renderMap();
-        if(tabId === 'bible') window.loadBibleText();
-        if(tabId === 'admin') loadAdminData();
-    }
-
-    // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
-    function updateUI() {
-        document.getElementById('ui-stars').innerText = window.gameState.stars;
-        document.getElementById('ui-lives').innerText = window.gameState.lives;
-        
-        document.getElementById('profile-name').innerText = window.gameState.name;
-        document.getElementById('profile-avatar').innerText = window.gameState.name.charAt(0).toUpperCase();
-        document.getElementById('profile-stars').innerText = window.gameState.stars;
-        document.getElementById('profile-level').innerText = window.gameState.level;
-    }
-
-    // БИБЛИЯ
-    window.loadBibleText = function() {
-        const book = document.getElementById('bible-book').value;
-        const chapter = document.getElementById('bible-chapter').value;
-        const container = document.getElementById('bible-text-container');
-        
-        container.innerHTML = '';
-        
-        if(bibleData[book] && bibleData[book][chapter]) {
-            const verses = bibleData[book][chapter];
-            verses.forEach((verse, i) => {
-                const p = document.createElement('p');
-                p.className = "mb-3";
-                p.innerHTML = `<sup class="text-primary font-bold mr-1">${i+1}</sup> ${verse}`;
-                container.appendChild(p);
-            });
-        } else {
-            container.innerHTML = '<div class="text-center text-textMuted py-10"><i class="fa-solid fa-lock text-4xl mb-3 opacity-50"></i><p class="font-bold">Глава пока переводится...</p></div>';
-        }
-    }
-
-    // КАРТА УРОВНЕЙ
-    function renderMap() {
-        const map = document.getElementById('levels-map');
-        map.innerHTML = '';
-        levelsData.forEach((lvl) => {
-            const isUnlocked = lvl.id <= window.gameState.level;
-            const isCompleted = lvl.id < window.gameState.level;
-            const isCurrent = lvl.id === window.gameState.level;
-            
-            const node = document.createElement('div');
-            node.className = 'path-node flex flex-col items-center justify-center relative mb-8 w-24';
-            
-            const btn = document.createElement('button');
-            btn.className = `w-20 h-20 rounded-full flex items-center justify-center text-3xl btn-3d relative z-10`;
-            
-            if (isCompleted) {
-                btn.className += ' bg-success border-successDark text-white';
-                btn.innerHTML = `<i class="fa-solid fa-check"></i>`;
-            } else if (isCurrent) {
-                btn.className += ' bg-primary border-primaryDark text-white ring-4 ring-primary/30';
-                btn.innerHTML = `<i class="fa-solid fa-book-open"></i>`;
-                btn.onclick = () => window.startLesson(lvl.id);
-            } else {
-                btn.className += ' bg-lockedBg border-lockedDark text-lockedDark';
-                btn.innerHTML = `<i class="fa-solid fa-lock"></i>`;
-                btn.disabled = true;
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            if(!btn.classList.contains('text-yellow-500')) {
+                btn.classList.remove('text-[#8B5A2B]');
+                btn.classList.add('text-[#D2B48C]');
             }
-            node.appendChild(btn);
-            
-            // Звездочки под кружком
-            const stars = document.createElement('div');
-            stars.className = "flex space-x-1 mt-2 text-sm";
-            stars.innerHTML = `<i class="fa-${isCompleted ? 'solid' : 'regular'} fa-star ${isCompleted ? 'text-streak' : 'text-lockedDark'}"></i>`.repeat(3);
-            node.appendChild(stars);
-            
-            map.appendChild(node);
+        });
+        if(event && event.currentTarget && !event.currentTarget.classList.contains('text-yellow-500')) {
+            event.currentTarget.classList.remove('text-[#D2B48C]');
+            event.currentTarget.classList.add('text-[#8B5A2B]');
+        }
+    }
+
+    function openLesson(num) { document.getElementById('lesson-modal').classList.remove('hide'); }
+    function closeLesson() { document.getElementById('lesson-modal').classList.add('hide'); }
+
+    function loadAdminPanel() {
+        const list = document.getElementById('admin-list');
+        const db = JSON.parse(localStorage.getItem('svet_users_db') || '[]');
+        list.innerHTML = '';
+        if(db.length === 0) {
+            list.innerHTML = '<li class="py-2 text-sm text-gray-500">Нет пользователей</li>';
+            return;
+        }
+        db.forEach(u => {
+            list.innerHTML += `<li class="py-3 font-bold text-[#5C4033] text-sm">${u}</li>`;
         });
     }
 
-    // ЛОГИКА УРОКОВ
-    let currentLesson = null;
-    let isCorrectAnswer = false;
-
-    window.startLesson = function(id) {
-        currentLesson = levelsData.find(l => l.id === id);
-        document.getElementById('quiz-question').innerText = currentLesson.q;
-        
-        const opts = document.getElementById('quiz-options');
-        opts.innerHTML = '';
-        currentLesson.options.forEach((opt, idx) => {
-            const btn = document.createElement('button');
-            btn.className = "quiz-opt btn-3d w-full bg-white border-2 border-lockedBg text-textMain font-bold py-4 px-6 rounded-2xl text-lg text-left transition-colors";
-            btn.innerText = opt;
-            btn.onclick = () => window.checkAnswer(btn, idx === currentLesson.correct);
-            opts.appendChild(btn);
-        });
-        
-        document.getElementById('quiz-feedback').style.transform = 'translateY(100%)';
-        document.getElementById('lesson-overlay').classList.remove('hide');
-        document.getElementById('lesson-overlay').classList.add('flex');
-    }
-
-    window.closeLesson = function() {
-        document.getElementById('lesson-overlay').classList.add('hide');
-        document.getElementById('lesson-overlay').classList.remove('flex');
-    }
-
-    window.checkAnswer = function(btnEl, isCorrect) {
-        document.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
-        isCorrectAnswer = isCorrect;
-        
-        const fbPanel = document.getElementById('quiz-feedback');
-        const fbIcon = document.getElementById('feedback-icon');
-        const fbText = document.getElementById('feedback-text');
-        
-        if (isCorrect) {
-            btnEl.classList.add('bg-success', 'bg-opacity-20', 'border-success', 'text-successDark');
-            fbPanel.className = 'absolute bottom-0 w-full p-6 rounded-t-3xl z-50 transition-transform transform translate-y-0 flex flex-col bg-green-50 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]';
-            fbIcon.className = 'w-10 h-10 rounded-full flex items-center justify-center text-white text-xl font-bold mr-3 bg-success';
-            fbIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
-            fbText.className = 'text-xl font-black text-successDark';
-            fbText.innerText = 'Отлично!';
-        } else {
-            btnEl.classList.add('bg-error', 'bg-opacity-20', 'border-error', 'text-errorDark');
-            window.gameState.lives--;
-            setDoc(userDocRef, window.gameState, { merge: true });
-            updateUI();
-            
-            fbPanel.className = 'absolute bottom-0 w-full p-6 rounded-t-3xl z-50 transition-transform transform translate-y-0 flex flex-col bg-red-50 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]';
-            fbIcon.className = 'w-10 h-10 rounded-full flex items-center justify-center text-white text-xl font-bold mr-3 bg-error';
-            fbIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-            fbText.className = 'text-xl font-black text-errorDark';
-            fbText.innerText = 'Ошибка!';
-        }
-    }
-
-    window.finishLessonStep = async function() {
-        if(isCorrectAnswer) {
-            if(window.gameState.level === currentLesson.id && window.gameState.level < 5) {
-                window.gameState.level++;
-            }
-            window.gameState.stars += 3;
-            await setDoc(userDocRef, window.gameState, { merge: true });
-            updateUI();
-            renderMap();
-            window.closeLesson();
-        } else {
-            if(window.gameState.lives <= 0) {
-                window.gameState.lives = 5; // Восстанавливаем
-                await setDoc(userDocRef, window.gameState, { merge: true });
-                updateUI();
-                window.closeLesson();
-            } else {
-                document.getElementById('quiz-feedback').style.transform = 'translateY(100%)';
-                document.querySelectorAll('.quiz-opt').forEach(b => {
-                    b.disabled = false;
-                    b.className = "quiz-opt btn-3d w-full bg-white border-2 border-lockedBg text-textMain font-bold py-4 px-6 rounded-2xl text-lg text-left";
-                });
-            }
-        }
-    }
-
-    // АДМИНКА
-    async function loadAdminData() {
-        const list = document.getElementById('admin-users-list');
-        list.innerHTML = '<div class="p-4 text-center text-textMuted font-bold text-sm"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Загрузка душ...</div>';
-        
-        try {
-            const usersCol = collection(db, 'artifacts', appId, 'public', 'data', 'users');
-            const snapshot = await getDocs(usersCol);
-            list.innerHTML = '';
-            
-            snapshot.forEach(docSnap => {
-                const data = docSnap.data();
-                const row = document.createElement('div');
-                row.className = "flex items-center p-3 text-sm font-bold text-textMain";
-                row.innerHTML = `
-                    <div class="flex-1 truncate pr-2">${data.name || 'Аноним'}</div>
-                    <div class="w-12 text-center text-primary">${data.level || 1}</div>
-                    <div class="w-12 text-center text-streak">${data.stars || 0}</div>
-                    <div class="w-10 text-right">
-                        <button onclick="deleteAdminUser('${docSnap.id}')" class="text-error opacity-50 hover:opacity-100 hover:text-errorDark transition-opacity"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                list.appendChild(row);
-            });
-        } catch (e) {
-            console.error(e);
-            list.innerHTML = '<div class="p-4 text-center text-error font-bold text-sm">Ошибка доступа</div>';
-        }
-    }
-
-    window.deleteAdminUser = async function(uid) {
-        try {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', uid));
-            loadAdminData(); // Перезагружаем список
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    // ЗАПУСК
-    window.onload = init;
+    window.onload = checkAuth;
 </script>
 </body>
 </html>
